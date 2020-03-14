@@ -1,7 +1,5 @@
 package com.projeto.ia.redes.neurais;
 
-import java.util.List;
-
 public class Teste {
 
     static Double alfa = 10.0;
@@ -11,11 +9,11 @@ public class Teste {
 
             double peso1 = getRandomDouble();
             double dado1 = -1.0;
-            Neuronio neuronio1 = new Neuronio(peso1, dado1);
+            NeuronioPerceptron neuronio1 = new NeuronioPerceptron(peso1, dado1);
 
             double peso2 = getRandomDouble();
             double dado2 = -1.0;
-            Neuronio neuronio2 = new Neuronio(peso2, dado2);
+            NeuronioPerceptron neuronio2 = new NeuronioPerceptron(peso2, dado2);
 
             double bias  = 1.0;
             double retorno;
