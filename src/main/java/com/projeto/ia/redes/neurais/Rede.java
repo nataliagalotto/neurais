@@ -2,23 +2,27 @@ package com.projeto.ia.redes.neurais;
 
 import java.util.List;
 
+//Responsavel por gerar as Camadas e administrar elas
 public class Rede {
 
+    //Responsavel por gerar a camada sensor
     public  List<NeuronioPerceptron> gerarCamadaSensor(){
         CamadaSensor camadaSensor = new CamadaSensor();
-        camadaSensor.getEntrada();
         return camadaSensor.gerarListaNeuronios();
     }
 
-    public void gerarCamadaOculta(){
+    //Responsavel por gerar a Camada oculta
+    public List<NeuronioPerceptron> gerarCamadaOculta(List<NeuronioPerceptron> neuronioSensoriais){
         CamadaProcessador camadaProcessador = new CamadaProcessador();
-        List<NeuronioPerceptron> neuronioSensoriais = gerarCamadaSensor();
         camadaProcessador.setNeuroniosSensores(neuronioSensoriais);
-        camadaProcessador.gerarListaNeuroniosProcessadores();
+        return camadaProcessador.gerarListaNeuroniosProcessadores();
     }
 
-    public void gerarCamadaSaida(){
-
+    //Responsavel por gerar a Camada Processador
+    public List<NeuronioPerceptron> gerarCamadaSaida(List<NeuronioPerceptron> neuronioProcessadores){
+        CamadaSaida camadaSaida = new CamadaSaida();
+        camadaSaida.setneuroniosProcessadores(neuronioProcessadores);
+        return camadaSaida.gerarListaNeuroniosSaida();
     }
 
 

@@ -10,23 +10,18 @@ import java.util.Random;
 @SpringBootApplication
 public class Aprendizado {
 
-	Double alfa;
-	List<String> dados;
-	List<String> targets;
-
+	//Area responsável por fazer o aprendizado da RedeNeural
 	public static void main(String[] args) {
 		try {
 
 		Rede rede = new Rede();
-		rede.gerarCamadaOculta();
+		List<NeuronioPerceptron> neuronioSensoriais = rede.gerarCamadaSensor();
+		List<NeuronioPerceptron> neuronioProcessadores = rede.gerarCamadaOculta(neuronioSensoriais);
+		rede.gerarCamadaSaida(neuronioProcessadores);
 
 		}catch (Exception e ){
 			System.out.println(e.toString());
 			System.out.println(e.getMessage());
 		}
 	}
-
-
-
-
 }
