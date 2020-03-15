@@ -17,25 +17,16 @@ public class Aprendizado {
 	public static void main(String[] args) {
 		try {
 
+		Rede rede = new Rede();
+		rede.gerarCamadaOculta();
+
 		}catch (Exception e ){
+			System.out.println(e.toString());
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public void getEntrada(){
-		Leitura leitura = new Leitura();
-		List<String[]> lista = leitura.dados();
-		for (String[] linhas : lista){
-			for (int i = 0; i < linhas.length; i++) {
-				if (i == 2){
-					targets.add(linhas[i]);
-				}else{
-					dados.add(linhas[i]);
-				}
-			}
-		}
 
-	}
 
 
 }
