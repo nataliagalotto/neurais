@@ -10,7 +10,6 @@ public class CamadaSensor {
 
     public List<NeuronioPerceptron> gerarListaNeuronios(){
         NeuronioFactory neuronioFactory = new NeuronioFactory();
-        pegarDadosEntrada();
         for(Double dado : dadosEntrada){
             NeuronioPerceptron neuronioPerceptron = neuronioFactory.getNeuronio();
             neuronioPerceptron.setSaida(dado);
@@ -20,10 +19,11 @@ public class CamadaSensor {
         return neuroniosSensores;
     }
 
-    public void pegarDadosEntrada(){
-        Leitura leitura = new Leitura("dados/caracteres-limpo.csv");
-        this.dadosEntrada = leitura.gerarDadosEntrada();
+    public void setDadosEntrada(List<Double> dadosEntrada) {
+        this.dadosEntrada = dadosEntrada;
     }
 
-
+    public List<NeuronioPerceptron> getNeuroniosSensores() {
+        return neuroniosSensores;
+    }
 }

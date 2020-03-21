@@ -6,25 +6,27 @@ import java.util.List;
 public class Rede {
 
     //Responsavel por gerar a camada sensor
-    public  List<NeuronioPerceptron> gerarCamadaSensor(){
+    public  CamadaSensor gerarCamadaSensor(List<Double> dadosEntrada){
         CamadaSensor camadaSensor = new CamadaSensor();
-        return camadaSensor.gerarListaNeuronios();
+        camadaSensor.setDadosEntrada(dadosEntrada);
+        camadaSensor.gerarListaNeuronios();
+        return camadaSensor;
     }
 
     //Responsavel por gerar a Camada oculta
-    public List<NeuronioPerceptron> gerarCamadaOculta(List<NeuronioPerceptron> neuronioSensoriais){
+    public CamadaProcessador gerarCamadaOculta(CamadaSensor camadaSensor){
         CamadaProcessador camadaProcessador = new CamadaProcessador();
-        camadaProcessador.setNeuroniosSensores(neuronioSensoriais);
-        return camadaProcessador.gerarListaNeuroniosProcessadores();
+        camadaProcessador.setNeuroniosSensores(camadaSensor.getNeuroniosSensores());
+        camadaProcessador.gerarListaNeuroniosProcessadores();
+        return camadaProcessador;
     }
 
     //Responsavel por gerar a Camada Processador
-    public List<NeuronioPerceptron> gerarCamadaSaida(List<NeuronioPerceptron> neuronioProcessadores){
+    public CamadaSaida gerarCamadaSaida(CamadaProcessador camadaProcessador){
         CamadaSaida camadaSaida = new CamadaSaida();
-        camadaSaida.setneuroniosProcessadores(neuronioProcessadores);
-        return camadaSaida.gerarListaNeuroniosSaida();
+        camadaSaida.setneuroniosProcessadores(camadaProcessador.getNeuroniosProcessadores());
+        camadaSaida.gerarListaNeuroniosSaida();
+        return camadaSaida;
     }
-
-
 
 }

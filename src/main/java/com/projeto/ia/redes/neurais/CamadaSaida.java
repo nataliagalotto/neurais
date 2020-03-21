@@ -46,4 +46,18 @@ public class CamadaSaida {
         this.neuroniosProcessadores = neuroniosSensores;
     }
 
+    public void funcaoDeltinha(int [] targets){
+
+        //for (int i = 0; i < ; i++) {
+            Double x = neuroniosSaida.get(0).saida;
+            Double c = (targets[0]- x) * funcaoDerivada(x);
+            System.out.println(c);
+        //}
+
+    }
+
+    public Double funcaoDerivada(Double x){
+        Double y = 1/(1 + (Math.exp(-x)));
+        return y - Math.pow(y,2);
+    }
 }

@@ -11,7 +11,7 @@ public class Leitura {
 
     String caminhoArquivo;
     List<Double> dados = new ArrayList<>();
-    List<String> targets = new ArrayList<>();
+    String target;
 
     public Leitura(String caminhoArquivo) {
         this.caminhoArquivo = caminhoArquivo;
@@ -37,14 +37,16 @@ public class Leitura {
             dados.add(numero);
             //System.out.println("linha["+i+"]: "+ dados.get(i));
         }
-        setTargets(linhas[linhas.length - 1]);
+        setTarget(linhas[linhas.length - 1]);
         return dados;
     }
 
-    public void setTargets(String letra){
-        targets.add(letra);
+    public void setTarget(String letra){
+        this.target = letra;
         System.out.println("Letra: "+letra);
     }
 
-
+    public String getTarget() {
+        return target;
+    }
 }

@@ -46,4 +46,7 @@ public class CamadaProcessador {
         this.neuroniosSensores = neuroniosSensores;
     }
 
+    public List<NeuronioPerceptron> getNeuroniosProcessadores() {
+        return neuroniosProcessadores;
+    }
 }
