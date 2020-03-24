@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CamadaProcessador {
+    //dado = zzinho
+    //somatorio = z_in
+    //peso = w
 
     List<NeuronioPerceptron> neuroniosSensores = new ArrayList<>();
     List<NeuronioPerceptron> neuroniosProcessadores = new ArrayList<>();
     Double bias;
+    int qtdNeuronios = 20;
+    int qtdPesos = 7;
 
     public Double funcaoAtivacao(Double somatorio){
         return 1/(1 + (Math.exp(-somatorio)));
@@ -18,7 +23,7 @@ public class CamadaProcessador {
         Double somatorio = 0.0;
         for (NeuronioPerceptron neuronio : neuroniosSensores){
             //System.out.println("Dado: "+neuronio.getSaida()+ " Peso: "+neuronio.getPesos().get(indice));
-            somatorio = (neuronio.getSaida() * neuronio.getPesos().get(indice)) + somatorio;
+            somatorio = (neuronio.getDado() * neuronio.getPesos().get(indice)) + somatorio;
             //System.out.println("Somatorio: "+ somatorio);
         }
         somatorio = bias + somatorio;
@@ -28,11 +33,12 @@ public class CamadaProcessador {
 
     public List<NeuronioPerceptron> gerarListaNeuroniosProcessadores(){
         NeuronioFactory neuronioFactory = new NeuronioFactory();
-        for (int i = 0; i < 20 ; i++) {
+
+        for (int i = 0; i < qtdNeuronios ; i++) {
             NeuronioPerceptron neuronioPerceptron = neuronioFactory.getNeuronio();
             neuronioPerceptron.setSomatorio(somatorio(i));
-            neuronioPerceptron.setSaida(funcaoAtivacao(somatorio(i)));
-            neuronioPerceptron.getPesos();
+            neuronioPerceptron.setDado(funcaoAtivacao(somatorio(i)));
+            neuronioPerceptron.gerarPesos(qtdPesos);
             neuroniosProcessadores.add(neuronioPerceptron);
         }
         return neuroniosProcessadores;

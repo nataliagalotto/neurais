@@ -2,11 +2,15 @@ package com.projeto.ia.redes.neurais;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.projeto.ia.redes.neurais.Utils;
 
 public class NeuronioPerceptron {
 
-    List<Double> pesos = new ArrayList<>(19);
-    Double saida;
+    List<Double> pesos = new ArrayList<>();
+    // A variável dado representa a saída da camada
+    // ou seja, o resultado após a aplicaçao da funçao
+    // de ativação
+    Double dado;
     Double somatorio;
 
     public NeuronioPerceptron() {
@@ -14,20 +18,23 @@ public class NeuronioPerceptron {
     }
 
     public List<Double> getPesos() {
-        this.pesos = gerarPesos();
         return pesos;
+    }
+
+    public Double getPeso(int index){
+        return pesos.get(index);
     }
 
     public void setPesos(List<Double> pesos) {
         this.pesos = pesos;
     }
 
-    public Double getSaida() {
-        return saida;
+    public Double getDado() {
+        return dado;
     }
 
-    public void setSaida(Double saida) {
-        this.saida = saida;
+    public void setDado(Double dado) {
+        this.dado = dado;
     }
 
     public Double getSomatorio() {
@@ -38,9 +45,10 @@ public class NeuronioPerceptron {
         this.somatorio = somatorio;
     }
 
-    public List<Double> gerarPesos(){
-        for (int i = 0; i < 20 ; i++) {
-            pesos.add(Utils.getRandomDouble());
+    public List<Double> gerarPesos(int qtd){
+        Utils utils = new Utils();
+        for (int i = 0; i < qtd ; i++) {
+            pesos.add(utils.getRandomDouble());
         }
         return pesos;
     }
