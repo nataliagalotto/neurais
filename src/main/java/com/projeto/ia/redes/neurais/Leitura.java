@@ -28,10 +28,8 @@ public class Leitura {
         }
     }
 
-    public List<Double> gerarDadosEntrada(){
-        List<String[]> lista = dadosCSV();
+    public List<Double> gerarDadosEntrada(String [] linhas){
         //System.out.println("LINHA 1 \n");
-        String [] linhas  = lista.get(0);
         for (int i = 0; i < linhas.length - 1 ; i++) {
             Double numero = Double.parseDouble(linhas[i].replaceAll("\\uFEFF", ""));
             dados.add(numero);

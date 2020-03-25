@@ -10,7 +10,8 @@ public class CamadaSaida {
     List<NeuronioPerceptron> neuroniosProcessadores = new ArrayList<>();
     List<NeuronioPerceptron> neuroniosSaida = new ArrayList<>();
     List<Double> deltinhas_K = new ArrayList<>();
-    Double bias;
+    Double[][] deltao_JK = new Double[neuroniosSaida.size()][neuroniosProcessadores.size()];
+    List<Double> deltao_biasWK = new ArrayList<>();
     int qtdPesos;
     int qtdNeuronios = 7;
 
@@ -18,7 +19,7 @@ public class CamadaSaida {
         return 1/(1 + (Math.exp(-somatorio)));
     }
 
-    public Double somatorio ( Integer indice){
+    public Double somatorio ( Integer indice, Double bias){
         bias = 1.0;
         Double somatorio = 0.0;
         for (NeuronioPerceptron neuronio : neuroniosProcessadores){
@@ -33,35 +34,54 @@ public class CamadaSaida {
 
     public List<NeuronioPerceptron> gerarListaNeuroniosSaida(){
         NeuronioFactory neuronioFactory = new NeuronioFactory();
+        Double yzinho;
+        Double y_in;
+        Double bias = 1.0;
+
         for (int i = 0; i < qtdNeuronios ; i++) {
+            y_in = somatorio(i, bias);
+            yzinho = funcaoAtivacao(y_in);
+
             NeuronioPerceptron neuronioPerceptron = neuronioFactory.getNeuronio();
-            neuronioPerceptron.setSomatorio(somatorio(i));
-            neuronioPerceptron.setDado(funcaoAtivacao(somatorio(i)));
+            neuronioPerceptron.setSomatorio(y_in);
+            neuronioPerceptron.setDado(yzinho);
             neuroniosSaida.add(neuronioPerceptron);
         }
         return neuroniosSaida;
     }
 
-    public  Double[][] funcaoDeltao(int [] targets,Double alfa){
-        Double[][] deltao_JK = new Double[neuroniosSaida.size()][neuroniosProcessadores.size()];
+    public  void funcaoDeltao(int [] targets,Double alfa){
+        Utils utils = new Utils();
         Double y_in;
         Double y;
 
         for (int k = 0; k < neuroniosSaida.size() ; k++) {
             y_in = neuroniosSaida.get(k).getSomatorio();
             y = neuroniosSaida.get(k).getDado();
-            deltinhas_K.add((targets[k]- y) * );
+            deltinhas_K.add((targets[k]- y) * utils.funcaoDerivada(y_in));
 
             for (int j = 0; j < neuroniosProcessadores.size() ; j++) {
                 deltao_JK[k][j] = (deltinhas_K.get(k) * alfa * neuroniosProcessadores.get(j).getDado());
             }
         }
-
-        return deltao_JK;
     }
 
+    public void funcaoBias(Double alfa){
+        for (int k = 0; k < qtdNeuronios; k++) {
+            deltao_biasWK.add(alfa * deltinhas_K.get(k));
+        }
+    }
+    
+    public void atualizaPesosBias(){
+        for (int k = 0; k < qtdNeuronios; k++) {
+            NeuronioPerceptron neuronioSaida = neuroniosSaida.get(k);
+            neuronioSaida.setBias(neuronioSaida.getBias() + deltao_biasWK.get(k));
 
-
+            for (int j = 0; j < neuroniosProcessadores.size(); j++) {
+                neuronioSaida.setPeso(j ,neuronioSaida.getPeso(j) + deltao_JK[k][j]);
+            }
+        }
+    }
 
     public List<NeuronioPerceptron> getneuroniosProcessadores() {
         return neuroniosProcessadores;
@@ -71,11 +91,4 @@ public class CamadaSaida {
         this.neuroniosProcessadores = neuroniosSensores;
     }
 
-    public List<Double> getDeltinhas_K() {
-        return deltinhas_K;
-    }
-
-    public void setDeltinhas_K(List<Double> deltinhas_K) {
-        this.deltinhas_K = deltinhas_K;
-    }
 }

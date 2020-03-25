@@ -12,6 +12,7 @@ public class NeuronioPerceptron {
     // de ativação
     Double dado;
     Double somatorio;
+    Double bias;
 
     public NeuronioPerceptron() {
 
@@ -23,6 +24,9 @@ public class NeuronioPerceptron {
 
     public Double getPeso(int index){
         return pesos.get(index);
+    }
+    public void setPeso(int index, Double peso){
+       pesos.set(index, peso);
     }
 
     public void setPesos(List<Double> pesos) {
@@ -43,6 +47,14 @@ public class NeuronioPerceptron {
 
     public void setSomatorio(Double somatorio) {
         this.somatorio = somatorio;
+    }
+
+    public Double getBias() {
+        return bias;
+    }
+
+    public void setBias(Double bias) {
+        this.bias = bias;
     }
 
     public List<Double> gerarPesos(int qtd){
