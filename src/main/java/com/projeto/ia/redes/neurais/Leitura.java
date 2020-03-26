@@ -2,8 +2,7 @@ package com.projeto.ia.redes.neurais;
 
 import com.opencsv.CSVReader;
 
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,5 +45,34 @@ public class Leitura {
 
     public String getTarget() {
         return target;
+    }
+
+    public File criaArquivo(){
+        try{
+            File file = new File(caminhoArquivo);
+
+            //Create the file
+            if (file.createNewFile())
+            {
+                System.out.println("File is created!");
+            } else {
+                System.out.println("File already exists.");
+            }
+
+           return file;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public void printaArquivo(String texto, File file){
+        try{
+            //Write Content
+            FileWriter writer = new FileWriter(file);
+            writer.write(texto);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

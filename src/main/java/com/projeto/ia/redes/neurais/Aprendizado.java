@@ -1,7 +1,10 @@
 package com.projeto.ia.redes.neurais;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.Reader;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -17,7 +20,7 @@ public class Aprendizado {
 	//Area responsável por fazer o aprendizado da RedeNeural
 	public static void main(String[] args) {
 		try {
-			Leitura leitura = new Leitura("dados/caracteres-limpo.csv");
+			Leitura leitura = new Leitura("dados/entrada/caracteres-limpo.csv");
 			List<String[]> dadosPlanilha = leitura.dadosCSV();
 
 //			for ( epocas = 0; epocas < alfa ; epocas++) {
@@ -33,6 +36,7 @@ public class Aprendizado {
 					// Estagio feedforward
 					Rede rede = new Rede();
 					CamadaSensor camadaSensor = rede.gerarCamadaSensor(dadosEntrada);
+					printaValoresInicias(camadaSensor.getNeuroniosSensores());
 					CamadaProcessador camadaProcessador = rede.gerarCamadaOculta(camadaSensor);
 					CamadaSaida camadaSaida = rede.gerarCamadaSaida(camadaProcessador);
 
@@ -56,6 +60,23 @@ public class Aprendizado {
 			System.out.println(e.toString());
 			System.out.println(e.getMessage());
 		}
+	}
+
+	public static void printaValoresInicias(List<NeuronioPerceptron> neuronioPerceptrons){
+		try{
+			Leitura leitura = new Leitura("dados/saida/valoresIniciais.txt");
+			File file = leitura.criaArquivo();
+			FileWriter writer = new FileWriter(file);
+
+			for (NeuronioPerceptron neuronio : neuronioPerceptrons){
+				for (Double peso : neuronio.getPesos()){
+					writer.write(peso.toString());
+				}
+			}
+		}catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+
 	}
 
 	public static int [] alteraTarget(String letra){

@@ -54,17 +54,20 @@ public class CamadaSaida {
         Utils utils = new Utils();
         Double y_in;
         Double y;
+        Double erro;
 
         for (int k = 0; k < neuroniosSaida.size() ; k++) {
             y_in = neuroniosSaida.get(k).getSomatorio();
             y = neuroniosSaida.get(k).getDado();
-            deltinhas_K.add((targets[k]- y) * utils.funcaoDerivada(y_in));
+            erro = (targets[k]- y);
+            deltinhas_K.add( erro * utils.funcaoDerivada(y_in));
 
             for (int j = 0; j < neuroniosProcessadores.size() ; j++) {
                 deltao_JK[k][j] = (deltinhas_K.get(k) * alfa * neuroniosProcessadores.get(j).getDado());
             }
         }
     }
+
 
     public void funcaoBias(Double alfa){
         for (int k = 0; k < qtdNeuronios; k++) {

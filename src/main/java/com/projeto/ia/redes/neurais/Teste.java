@@ -5,6 +5,7 @@ public class Teste {
     static Double alfa = 10.0;
 
     public static void main(String[] args) {
+
 //        try {
 //
 //            double peso1 = getRandomDouble();
