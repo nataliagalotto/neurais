@@ -1,8 +1,5 @@
 package com.projeto.ia.redes.neurais;
 
-import java.io.File;
-import java.io.FileWriter;
-
 public class Utils {
 
     public Double getRandomDouble(){
@@ -14,11 +11,4 @@ public class Utils {
         }
         return numero;
     }
-
-    public Double funcaoDerivada(Double x){
-        Double y = 1/(1 + (Math.exp(-x)));
-        return y - Math.pow(y,2);
-    }
-
-
 }

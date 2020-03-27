@@ -14,17 +14,17 @@ public class Rede {
     }
 
     //Responsavel por gerar a Camada oculta
-    public CamadaProcessador gerarCamadaOculta(CamadaSensor camadaSensor){
-        CamadaProcessador camadaProcessador = new CamadaProcessador();
-        camadaProcessador.setNeuroniosSensores(camadaSensor.getNeuroniosSensores());
-        camadaProcessador.gerarListaNeuroniosProcessadores();
-        return camadaProcessador;
+    public CamadaOculta gerarCamadaOculta(CamadaSensor camadaSensor){
+        CamadaOculta camadaOculta = new CamadaOculta();
+        camadaOculta.setNeuroniosSensores(camadaSensor.getNeuroniosSensores());
+        camadaOculta.gerarListaNeuroniosProcessadores();
+        return camadaOculta;
     }
 
     //Responsavel por gerar a Camada Processador
-    public CamadaSaida gerarCamadaSaida(CamadaProcessador camadaProcessador){
+    public CamadaSaida gerarCamadaSaida(CamadaOculta camadaOculta){
         CamadaSaida camadaSaida = new CamadaSaida();
-        camadaSaida.setneuroniosProcessadores(camadaProcessador.getNeuroniosProcessadores());
+        camadaSaida.setneuroniosProcessadores(camadaOculta.getNeuroniosProcessadores());
         camadaSaida.gerarListaNeuroniosSaida();
         return camadaSaida;
     }

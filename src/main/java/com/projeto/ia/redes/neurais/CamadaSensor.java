@@ -3,13 +3,16 @@ package com.projeto.ia.redes.neurais;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CamadaSensor {
-    //dado = xzinho
-    //peso = v
+//dado = xzinho
+//peso = v
+public class CamadaSensor extends CamadaBase{
 
     List<Double> dadosEntrada = new ArrayList<>();
-    List<NeuronioPerceptron> neuroniosSensores = new ArrayList<>();
-    int qtdPesos = 20;
+
+    public CamadaSensor() {
+        this.qtdPesos = 20;
+        this.qtdNeuronios = 63;
+    }
 
     public List<NeuronioPerceptron> gerarListaNeuronios(){
         NeuronioFactory neuronioFactory = new NeuronioFactory();

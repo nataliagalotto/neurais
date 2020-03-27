@@ -47,7 +47,7 @@ public class Leitura {
         return target;
     }
 
-    public File criaArquivo(){
+    public FileWriter geraArquivo(){
         try{
             File file = new File(caminhoArquivo);
 
@@ -59,18 +59,66 @@ public class Leitura {
                 System.out.println("File already exists.");
             }
 
-           return file;
+            //Write Content
+            FileWriter writer = new FileWriter(file, true);
+
+           return writer;
         }catch (Exception e){
             System.out.println(e.getMessage());
             return null;
         }
     }
 
-    public void printaArquivo(String texto, File file){
+    public void printaTexto(String texto){
         try{
-            //Write Content
-            FileWriter writer = new FileWriter(file);
-            writer.write(texto);
+            FileWriter writer = geraArquivo();
+            writer.write(texto+"\n");
+            writer.close();
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void printaErros(Double[] valores){
+        try{
+            FileWriter writer = geraArquivo();
+            writer.write("Errors\n");
+            for (int i = 0; i < valores.length; i++) {
+                writer.write(valores[i]+"\n");
+            }
+
+            writer.write("===============================\n");
+            writer.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void printaValoresInicias(String texto,CamadaBase camadaBase){
+        try{
+            FileWriter writer = geraArquivo();
+            writer.write(texto+"\n");
+            writer.write("qtdNeuronios: "+camadaBase.qtdNeuronios+"\n");
+            writer.write("qtdPesos: "+camadaBase.qtdPesos+"\n");
+            writer.close();
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void printaPesosInicias(List<NeuronioPerceptron> neuronioPerceptrons, String texto){
+        try{
+            FileWriter writer = geraArquivo();
+            writer.write(texto+"\n");
+
+            for (NeuronioPerceptron neuronio : neuronioPerceptrons){
+                for (Double peso : neuronio.getPesos()){
+                    writer.write(peso.toString()+"\n");
+                }
+            }
+            writer.close();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

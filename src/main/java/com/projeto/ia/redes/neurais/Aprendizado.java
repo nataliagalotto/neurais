@@ -3,26 +3,23 @@ package com.projeto.ia.redes.neurais;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.Reader;
-import java.sql.SQLOutput;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @SpringBootApplication
 public class Aprendizado {
 
 	static Double alfa = 30.0;
 	static int epocas = 0;
+	static CamadaSensor camadaSensor;
+	static CamadaOculta camadaOculta;
+	static CamadaSaida camadaSaida;
 
 	//Area responsável por fazer o aprendizado da RedeNeural
 	public static void main(String[] args) {
 		try {
 			Leitura leitura = new Leitura("dados/entrada/caracteres-limpo.csv");
 			List<String[]> dadosPlanilha = leitura.dadosCSV();
-
 //			for ( epocas = 0; epocas < alfa ; epocas++) {
 //			}
 
@@ -35,26 +32,32 @@ public class Aprendizado {
 
 					// Estagio feedforward
 					Rede rede = new Rede();
-					CamadaSensor camadaSensor = rede.gerarCamadaSensor(dadosEntrada);
-					printaValoresInicias(camadaSensor.getNeuroniosSensores());
-					CamadaProcessador camadaProcessador = rede.gerarCamadaOculta(camadaSensor);
-					CamadaSaida camadaSaida = rede.gerarCamadaSaida(camadaProcessador);
+					camadaSensor = rede.gerarCamadaSensor(dadosEntrada);
+					camadaOculta = rede.gerarCamadaOculta(camadaSensor);
+					camadaSaida = rede.gerarCamadaSaida(camadaOculta);
+
+					if(i == 0 && epocas == 0) {
+						printaInformacoesInicias();
+					}
 
 					// Estagio Backpropagation
 					int target[] = alteraTarget(letra);
 					camadaSaida.funcaoDeltao(target, alfa);
 					camadaSaida.funcaoBias(alfa);
-					camadaProcessador.funcaoDeltao(camadaSaida, alfa);
-					camadaProcessador.funcaoBias(alfa);
+					camadaOculta.funcaoDeltao(camadaSaida, alfa);
+					camadaOculta.funcaoBias(alfa);
+
+					printaErros();
 
 					// Estagio de Atualização de Pesos
 					camadaSaida.atualizaPesosBias();
-					camadaProcessador.atualizaPesosBias();
+					camadaOculta.atualizaPesosBias();
 				}
 
 				epocas++;
 			}
 
+			printaInformacoesFinais();
 
 		}catch (Exception e ){
 			System.out.println(e.toString());
@@ -62,21 +65,41 @@ public class Aprendizado {
 		}
 	}
 
-	public static void printaValoresInicias(List<NeuronioPerceptron> neuronioPerceptrons){
+	public static void printaInformacoesInicias(){
 		try{
 			Leitura leitura = new Leitura("dados/saida/valoresIniciais.txt");
-			File file = leitura.criaArquivo();
-			FileWriter writer = new FileWriter(file);
+			leitura.printaTexto("Alfa: "+ alfa);
+			leitura.printaValoresInicias("\nCamada Sensor", camadaSensor);
+			leitura.printaValoresInicias("\nCamada Oculta", camadaOculta);
+			leitura.printaValoresInicias("\nCamada Saida", camadaSaida);
 
-			for (NeuronioPerceptron neuronio : neuronioPerceptrons){
-				for (Double peso : neuronio.getPesos()){
-					writer.write(peso.toString());
-				}
-			}
+			Leitura leitura2 = new Leitura("dados/saida/pesosIniciais.txt");
+			leitura2.printaPesosInicias(camadaSensor.neuroniosSensores, "Pesos Camada Sensor");
+			leitura2.printaPesosInicias(camadaOculta.neuroniosProcessadores, "Pesos Camada Escondida");
+
 		}catch (Exception e){
 			System.out.println(e.getMessage());
 		}
+	}
 
+	public static void printaInformacoesFinais(){
+		try{
+			Leitura leitura = new Leitura("dados/saida/pesosFinais.txt");
+			leitura.printaPesosInicias(camadaSensor.neuroniosSensores, "Pesos Camada Sensor");
+			leitura.printaPesosInicias(camadaOculta.neuroniosProcessadores, "Pesos Camada Escondida");
+
+		}catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public static void printaErros(){
+		try {
+			Leitura leitura = new Leitura("dados/saida/erros.txt");
+			leitura.printaErros(camadaSaida.getErro());
+		}catch (Exception e){
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public static int [] alteraTarget(String letra){
@@ -107,6 +130,5 @@ public class Aprendizado {
 		}
 
 		return null;
-
 	}
 }
