@@ -15,7 +15,7 @@ public class NeuronioPerceptron {
     Double bias;
 
     public NeuronioPerceptron() {
-
+        this.bias = 1.0;
     }
 
     public List<Double> getPesos() {

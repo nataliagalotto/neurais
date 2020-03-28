@@ -54,9 +54,9 @@ public class Leitura {
             //Create the file
             if (file.createNewFile())
             {
-                System.out.println("File is created!");
+                //System.out.println("File is created!");
             } else {
-                System.out.println("File already exists.");
+                //System.out.println("File already exists.");
             }
 
             //Write Content

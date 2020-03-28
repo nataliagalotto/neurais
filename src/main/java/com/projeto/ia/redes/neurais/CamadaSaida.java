@@ -8,7 +8,7 @@ import java.util.List;
 public class CamadaSaida extends CamadaBase {
 
     List<Double> deltinhas_K = new ArrayList<>();
-    Double[][] deltao_JK = new Double[neuroniosSaida.size()][neuroniosProcessadores.size()];
+    Double[][] deltao_JK;
     List<Double> deltao_biasWK = new ArrayList<>();
     Double [] erro = new Double[7];
 
@@ -33,6 +33,8 @@ public class CamadaSaida extends CamadaBase {
     }
 
     public  void funcaoDeltao(int [] targets,Double alfa){
+        deltao_JK = new Double[neuroniosSaida.size()][neuroniosProcessadores.size()];
+
         for (int k = 0; k < neuroniosSaida.size() ; k++) {
             Double y_in = neuroniosSaida.get(k).getSomatorio();
             Double y = neuroniosSaida.get(k).getDado();
@@ -52,16 +54,7 @@ public class CamadaSaida extends CamadaBase {
         }
     }
     
-    public void atualizaPesosBias(){
-        for (int k = 0; k < qtdNeuronios; k++) {
-            NeuronioPerceptron neuronioSaida = neuroniosSaida.get(k);
-            neuronioSaida.setBias(neuronioSaida.getBias() + deltao_biasWK.get(k));
 
-            for (int j = 0; j < neuroniosProcessadores.size(); j++) {
-                neuronioSaida.setPeso(j ,neuronioSaida.getPeso(j) + deltao_JK[k][j]);
-            }
-        }
-    }
 
     public List<NeuronioPerceptron> getneuroniosProcessadores() {
         return neuroniosProcessadores;

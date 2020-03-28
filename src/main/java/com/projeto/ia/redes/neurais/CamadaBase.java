@@ -19,12 +19,12 @@ public class CamadaBase {
         bias = 1.0;
         Double somatorio = 0.0;
         for (NeuronioPerceptron neuronio : neuronioPerceptrons){
-            System.out.println("Dado: "+neuronio.getDado()+ " Peso: "+neuronio.getPeso(indice));
+            //System.out.println("Dado: "+neuronio.getDado()+ " Peso: "+neuronio.getPeso(indice));
             somatorio = (neuronio.getDado() * neuronio.getPeso(indice)) + somatorio;
-            System.out.println("Somatorio: "+ somatorio);
+            //System.out.println("Somatorio: "+ somatorio);
         }
         somatorio = bias + somatorio;
-        System.out.println("Somatorio do NP:  "+ indice + " valor: "+somatorio);
+        //System.out.println("Somatorio do NP:  "+ indice + " valor: "+somatorio);
         return somatorio;
     }
 

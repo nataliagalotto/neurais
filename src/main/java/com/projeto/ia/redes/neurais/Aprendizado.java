@@ -50,8 +50,8 @@ public class Aprendizado {
 					printaErros();
 
 					// Estagio de Atualização de Pesos
-					camadaSaida.atualizaPesosBias();
 					camadaOculta.atualizaPesosBias();
+					camadaSensor.atualizaPesosBias();
 				}
 
 				epocas++;
@@ -60,8 +60,15 @@ public class Aprendizado {
 			printaInformacoesFinais();
 
 		}catch (Exception e ){
-			System.out.println(e.toString());
-			System.out.println(e.getMessage());
+			for (StackTraceElement tk: e.getStackTrace()) {
+				System.err.println(tk.getClassName());
+				System.err.println(tk.getFileName());
+				System.err.println(tk.getLineNumber());
+				System.err.println(tk.getMethodName());
+				System.err.println(tk.toString());
+			}
+			System.err.println(e.getMessage());
+			System.err.println(e.getCause().getMessage());
 		}
 	}
 

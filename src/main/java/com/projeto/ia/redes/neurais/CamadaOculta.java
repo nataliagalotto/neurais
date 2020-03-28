@@ -9,7 +9,7 @@ import java.util.List;
 public class CamadaOculta extends CamadaBase {
 
     List<Double> deltinha_J = new ArrayList<>();
-    Double[][] deltao_vIJ = new Double[qtdNeuronios][qtdPesos];
+    Double[][] deltao_vIJ;
     List<Double> deltao_biasVJ = new ArrayList<>();
 
     public CamadaOculta() {
@@ -35,15 +35,18 @@ public class CamadaOculta extends CamadaBase {
     }
 
     public void funcaoDeltao(CamadaSaida camadaSaida, Double alfa){
-        List<Double> deltinha_inJ = new ArrayList<>();
+        deltao_vIJ = new Double[qtdNeuronios][neuroniosSensores.size()]; //qtdPesos
+        Double[] deltinha_inJ = new Double [qtdNeuronios];
 
         for (int j = 0; j < qtdNeuronios ; j++) {
+            deltinha_inJ[j] = 0.0;
+
             for (int k = 0; k < camadaSaida.qtdNeuronios ; k++) {
-                deltinha_inJ.add(camadaSaida.deltinhas_K.get(k) * neuroniosProcessadores.get(k).getPeso(j));
+                deltinha_inJ[j] = deltinha_inJ[j] +(camadaSaida.deltinhas_K.get(k) * neuroniosProcessadores.get(j).getPeso(k));
             }
 
             Double z_in = neuroniosProcessadores.get(j).getSomatorio();
-            deltinha_J.add(deltinha_inJ.get(j) * funcaoDerivada(z_in));
+            deltinha_J.add(deltinha_inJ[j] * funcaoDerivada(z_in));
 
             for (int i = 0; i < neuroniosSensores.size() ; i++) {
                 deltao_vIJ[j][i] = alfa * deltinha_J.get(j) * neuroniosSensores.get(i).getDado();
@@ -59,15 +62,14 @@ public class CamadaOculta extends CamadaBase {
 
     public void atualizaPesosBias(){
         for (int k = 0; k < qtdNeuronios; k++) {
-            NeuronioPerceptron neuronioProcessador = neuroniosProcessadores.get(k);
-            neuronioProcessador.setBias(neuronioProcessador.getBias() + deltao_biasVJ.get(k));
+            NeuronioPerceptron neuroniosProcessador = neuroniosProcessadores.get(k);
+            neuroniosProcessador.setBias(neuroniosProcessador.getBias() + deltao_biasWK.get(k));
 
             for (int j = 0; j < neuroniosProcessadores.size(); j++) {
-                neuronioProcessador.setPeso(j ,neuronioProcessador.getPeso(j) + deltao_vIJ[k][j]);
+                neuroniosProcessador.setPeso(j ,neuroniosProcessador.getPeso(j) + deltao_JK[k][j]);
             }
         }
     }
-
 
     public List<NeuronioPerceptron> getNeuroniosSensores() {
         return neuroniosSensores;

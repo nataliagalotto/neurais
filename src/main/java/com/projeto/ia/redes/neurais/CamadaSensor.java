@@ -25,6 +25,17 @@ public class CamadaSensor extends CamadaBase{
         return neuroniosSensores;
     }
 
+    public void atualizaPesosBias(){
+        for (int k = 0; k < qtdNeuronios; k++) {
+            NeuronioPerceptron neuroniosSensor = neuroniosSensores.get(k);
+            neuroniosSensor.setBias(neuroniosSensor.getBias() + deltao_biasVJ.get(k));
+
+            for (int j = 0; j < neuroniosProcessadores.size(); j++) {
+                neuroniosSensor.setPeso(j ,neuroniosSensor.getPeso(j) + deltao_vIJ[k][j]);
+            }
+        }
+    }
+
     public void setDadosEntrada(List<Double> dadosEntrada) {
         this.dadosEntrada = dadosEntrada;
     }
