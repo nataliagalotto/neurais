@@ -2,62 +2,67 @@ package com.projeto.ia.redes.neurais;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.util.List;
 
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 30.0;
+	static Double alfa = 300.0;
 	static int epocas = 0;
-	static CamadaSensor camadaSensor;
-	static CamadaOculta camadaOculta;
-	static CamadaSaida camadaSaida;
 
 	//Area responsável por fazer o aprendizado da RedeNeural
 	public static void main(String[] args) {
 		try {
 			Leitura leitura = new Leitura("dados/entrada/caracteres-limpo.csv");
 			List<String[]> dadosPlanilha = leitura.dadosCSV();
-//			for ( epocas = 0; epocas < alfa ; epocas++) {
-//			}
 
+			// Passo 0 - Estágio de Inicialização
+			Rede rede = new Rede();
+			rede.gerarCamadaSensorComPesos();
+			rede.gerarCamadaOcultaComPesos();
+			rede.gerarCamadaSaida();
+			printaInformacoesInicias(rede.getCamadaSensor(), rede.getCamadaOculta(), rede.getCamadaSaida());
+
+			// Passo 1 - Iterador de epocas
 			while (epocas < alfa){
-				// Iterador de epocas
-				for (int i = 0; i < 63; i++) {
+				System.out.println("Epoca: "+ epocas);
+
+				for (int i = 0; i < dadosPlanilha.size(); i++) {
 
 					List<Double> dadosEntrada = leitura.gerarDadosEntrada(dadosPlanilha.get(i));
 					String letra = leitura.getTarget();
 
-					// Estagio feedforward
-					Rede rede = new Rede();
-					camadaSensor = rede.gerarCamadaSensor(dadosEntrada);
-					camadaOculta = rede.gerarCamadaOculta(camadaSensor);
-					camadaSaida = rede.gerarCamadaSaida(camadaOculta);
+					// Passo 3, 4 e 5 - Estagio feedforward
+					rede.gerarDadosCamadaSensor(dadosEntrada);
+					rede.gerarDadosCamadaOculta();
+					rede.gerarDadosCamadaSaida();
 
-					if(i == 0 && epocas == 0) {
-						printaInformacoesInicias();
-					}
+					CamadaSensor camadaSensor= rede.getCamadaSensor();
+					CamadaOculta camadaOculta= rede.getCamadaOculta();
+					CamadaSaida camadaSaida = rede.getCamadaSaida();
 
-					// Estagio Backpropagation
+					// Passo 6 e 7 - Estagio Backpropagation
 					int target[] = alteraTarget(letra);
-					camadaSaida.funcaoDeltao(target, alfa);
-					camadaSaida.funcaoBias(alfa);
-					camadaOculta.funcaoDeltao(camadaSaida, alfa);
-					camadaOculta.funcaoBias(alfa);
+					Calcula calcula = new Calcula(camadaSensor.getNeuroniosSensores(),
+							camadaOculta.getNeuroniosProcessadores(),
+							camadaSaida.getNeuroniosSaida());
 
-					printaErros();
+					Double [][] deltaoWJK = calcula.funcaoDeltaoWJK(target, alfa);
+					Double [][] deltaoVIJ = calcula.funcaoDeltaoVIJ(alfa);
+					List<Double> deltao_biasWK = calcula.funcaoBiasWK(alfa);
+					List<Double> deltao_biasVJ = calcula.funcaoBiasVJ(alfa);
 
-					// Estagio de Atualização de Pesos
-					camadaOculta.atualizaPesosBias();
-					camadaSensor.atualizaPesosBias();
+					printaErros(calcula.getErro());
+
+					// Passo 8 - Estagio de Atualização de Pesos
+					rede.atualizaPesosCamadaSensor(deltaoVIJ);
+					rede.atualizaPesosBiasCamadaOculta(deltao_biasVJ,deltaoWJK);
+					rede.atualizaBiasCamadaSaida(deltao_biasWK);
 				}
-
 				epocas++;
 			}
 
-			printaInformacoesFinais();
+			printaInformacoesFinais(rede.getCamadaSensor(), rede.getCamadaOculta());
 
 		}catch (Exception e ){
 			for (StackTraceElement tk: e.getStackTrace()) {
@@ -72,7 +77,7 @@ public class Aprendizado {
 		}
 	}
 
-	public static void printaInformacoesInicias(){
+	public static void printaInformacoesInicias(CamadaSensor camadaSensor, CamadaOculta camadaOculta, CamadaSaida camadaSaida){
 		try{
 			Leitura leitura = new Leitura("dados/saida/valoresIniciais.txt");
 			leitura.printaTexto("Alfa: "+ alfa);
@@ -89,7 +94,7 @@ public class Aprendizado {
 		}
 	}
 
-	public static void printaInformacoesFinais(){
+	public static void printaInformacoesFinais(CamadaSensor camadaSensor, CamadaOculta camadaOculta){
 		try{
 			Leitura leitura = new Leitura("dados/saida/pesosFinais.txt");
 			leitura.printaPesosInicias(camadaSensor.neuroniosSensores, "Pesos Camada Sensor");
@@ -100,10 +105,10 @@ public class Aprendizado {
 		}
 	}
 
-	public static void printaErros(){
+	public static void printaErros(Double[] erros){
 		try {
 			Leitura leitura = new Leitura("dados/saida/erros.txt");
-			leitura.printaErros(camadaSaida.getErro());
+			leitura.printaErros(erros);
 		}catch (Exception e){
 			System.out.println(e.getMessage());
 		}

@@ -40,7 +40,7 @@ public class Leitura {
 
     public void setTarget(String letra){
         this.target = letra;
-        System.out.println("Letra: "+letra);
+        //System.out.println("Letra: "+letra);
     }
 
     public String getTarget() {
@@ -107,6 +107,20 @@ public class Leitura {
             System.out.println(e.getMessage());
         }
     }
+
+//    public void printaPesosInicias(List<Double> pesosPerceptrons, String texto){
+//        try{
+//            FileWriter writer = geraArquivo();
+//            writer.write(texto+"\n");
+//
+//            for (Double peso : pesosPerceptrons){
+//                writer.write(peso.toString()+"\n");
+//            }
+//            writer.close();
+//        }catch (Exception e){
+//            System.out.println(e.getMessage());
+//        }
+//    }
 
     public void printaPesosInicias(List<NeuronioPerceptron> neuronioPerceptrons, String texto){
         try{

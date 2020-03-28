@@ -14,33 +14,38 @@ public class CamadaSensor extends CamadaBase{
         this.qtdNeuronios = 63;
     }
 
-    public List<NeuronioPerceptron> gerarListaNeuronios(){
+    public List<NeuronioPerceptron> gerarListaNeuroniosComPesos(){
         NeuronioFactory neuronioFactory = new NeuronioFactory();
-        for(Double dado : dadosEntrada){
+        for (int i = 0; i < qtdNeuronios ; i++) {
             NeuronioPerceptron neuronioPerceptron = neuronioFactory.getNeuronio();
-            neuronioPerceptron.setDado(dado);
             neuronioPerceptron.gerarPesos(qtdPesos);
             neuroniosSensores.add(neuronioPerceptron);
         }
         return neuroniosSensores;
     }
 
-    public void atualizaPesosBias(){
-        for (int k = 0; k < qtdNeuronios; k++) {
-            NeuronioPerceptron neuroniosSensor = neuroniosSensores.get(k);
-            neuroniosSensor.setBias(neuroniosSensor.getBias() + deltao_biasVJ.get(k));
-
-            for (int j = 0; j < neuroniosProcessadores.size(); j++) {
-                neuroniosSensor.setPeso(j ,neuroniosSensor.getPeso(j) + deltao_vIJ[k][j]);
+    public List<NeuronioPerceptron> atualizaDadosNeuronios(){
+        for (NeuronioPerceptron neuroniosSensor : neuroniosSensores){
+            for(Double dado : dadosEntrada){
+                neuroniosSensor.setDado(dado);
             }
         }
+        return neuroniosSensores;
     }
+
+    public List<NeuronioPerceptron> atualizaPesosVJ(Double [][] deltao_vIJ){
+        for (int k = 0; k < qtdNeuronios; k++) {
+            for (int j = 0; j < qtdPesos; j++) {
+                Double peso = (neuroniosSensores.get(k).getPeso(j) + deltao_vIJ[j][k]);
+                neuroniosSensores.get(k).setPeso(j , peso);
+            }
+        }
+
+        return neuroniosSensores;
+    }
+
 
     public void setDadosEntrada(List<Double> dadosEntrada) {
         this.dadosEntrada = dadosEntrada;
-    }
-
-    public List<NeuronioPerceptron> getNeuroniosSensores() {
-        return neuroniosSensores;
     }
 }

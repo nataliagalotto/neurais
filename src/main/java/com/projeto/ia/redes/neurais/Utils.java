@@ -1,5 +1,8 @@
 package com.projeto.ia.redes.neurais;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Utils {
 
     public Double getRandomDouble(){
@@ -10,5 +13,14 @@ public class Utils {
             return 1.0;
         }
         return numero;
+    }
+
+    public List<Double> listaRandomDouble(int qtd){
+        List<Double> numeros = new ArrayList<>();
+
+        for (int i = 0; i < qtd ; i++) {
+            numeros.add(getRandomDouble());
+        }
+        return numeros;
     }
 }

@@ -15,8 +15,8 @@ public class CamadaBase {
         return 1/(1 + (Math.exp(-somatorio)));
     }
 
+    //por que indice??
     public Double somatorio ( Integer indice, Double bias, List<NeuronioPerceptron> neuronioPerceptrons){
-        bias = 1.0;
         Double somatorio = 0.0;
         for (NeuronioPerceptron neuronio : neuronioPerceptrons){
             //System.out.println("Dado: "+neuronio.getDado()+ " Peso: "+neuronio.getPeso(indice));
@@ -28,8 +28,45 @@ public class CamadaBase {
         return somatorio;
     }
 
-    public Double funcaoDerivada(Double x){
-        Double y = 1/(1 + (Math.exp(-x)));
-        return y - Math.pow(y,2);
+
+
+    public int getQtdNeuronios() {
+        return qtdNeuronios;
+    }
+
+    public void setQtdNeuronios(int qtdNeuronios) {
+        this.qtdNeuronios = qtdNeuronios;
+    }
+
+    public int getQtdPesos() {
+        return qtdPesos;
+    }
+
+    public void setQtdPesos(int qtdPesos) {
+        this.qtdPesos = qtdPesos;
+    }
+
+    public List<NeuronioPerceptron> getNeuroniosSensores() {
+        return neuroniosSensores;
+    }
+
+    public void setNeuroniosSensores(List<NeuronioPerceptron> neuroniosSensores) {
+        this.neuroniosSensores = neuroniosSensores;
+    }
+
+    public List<NeuronioPerceptron> getNeuroniosProcessadores() {
+        return neuroniosProcessadores;
+    }
+
+    public void setNeuroniosProcessadores(List<NeuronioPerceptron> neuroniosProcessadores) {
+        this.neuroniosProcessadores = neuroniosProcessadores;
+    }
+
+    public List<NeuronioPerceptron> getNeuroniosSaida() {
+        return neuroniosSaida;
+    }
+
+    public void setNeuroniosSaida(List<NeuronioPerceptron> neuroniosSaida) {
+        this.neuroniosSaida = neuroniosSaida;
     }
 }
