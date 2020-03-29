@@ -7,7 +7,7 @@ import java.util.List;
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 300.0;
+	static Double alfa = 3000.0;
 	static int epocas = 0;
 
 	//Area responsável por fazer o aprendizado da RedeNeural
