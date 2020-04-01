@@ -38,6 +38,16 @@ public class Leitura {
         return dados;
     }
 
+    public List<Double> gerarPesosEntrada(List<String []> pesosPlanilha){
+        List<Double> pesos = new ArrayList<>();
+
+        for (String[] peso : pesosPlanilha){
+            Double numero = Double.parseDouble(peso[0].replaceAll("\\uFEFF", ""));
+            pesos.add(numero);
+        }
+        return pesos;
+    }
+
     public void setTarget(String letra){
         this.target = letra;
         //System.out.println("Letra: "+letra);

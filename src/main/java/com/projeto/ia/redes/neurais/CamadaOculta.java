@@ -26,6 +26,20 @@ public class CamadaOculta extends CamadaBase {
         return neuroniosProcessadores;
     }
 
+    public List<NeuronioPerceptron> gerarListaNeuroniosComPesosTeste(List<Double> pesosEntrada){
+        NeuronioFactory neuronioFactory = new NeuronioFactory();
+        int inicial = 1260;
+        int limite = inicial+ qtdPesos;
+        for (int i = 0; i < qtdNeuronios ; i++) {
+            NeuronioPerceptron neuronioPerceptron = neuronioFactory.getNeuronio();
+            neuronioPerceptron.gerarPesosTeste(inicial, limite, pesosEntrada);
+            neuroniosProcessadores.add(neuronioPerceptron);
+            inicial = inicial + qtdPesos;
+            limite  = limite + qtdPesos;
+        }
+        return neuroniosProcessadores;
+    }
+
     public List<NeuronioPerceptron> atualizaDadosNeuronios(){
         //Revisar o somatorio na classe CamadaBase um bias a mais na
         //Fazer apenas a inicialização dos neuronios e qtdPesos

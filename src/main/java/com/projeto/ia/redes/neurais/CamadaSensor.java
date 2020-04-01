@@ -24,6 +24,20 @@ public class CamadaSensor extends CamadaBase{
         return neuroniosSensores;
     }
 
+    public List<NeuronioPerceptron> gerarListaNeuroniosComPesosTeste(List<Double> pesosEntrada){
+        NeuronioFactory neuronioFactory = new NeuronioFactory();
+        int inicial = 0;
+        int limite = qtdPesos;
+        for (int i = 0; i < qtdNeuronios ; i++) {
+            NeuronioPerceptron neuronioPerceptron = neuronioFactory.getNeuronio();
+            neuronioPerceptron.gerarPesosTeste(inicial, limite, pesosEntrada);
+            neuroniosSensores.add(neuronioPerceptron);
+            inicial = inicial + qtdPesos;
+            limite  = limite + qtdPesos;
+        }
+        return neuroniosSensores;
+    }
+
     public List<NeuronioPerceptron> atualizaDadosNeuronios(){
         for (NeuronioPerceptron neuroniosSensor : neuroniosSensores){
             for(Double dado : dadosEntrada){

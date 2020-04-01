@@ -25,6 +25,7 @@ public class NeuronioPerceptron {
     public Double getPeso(int index){
         return pesos.get(index);
     }
+
     public void setPeso(int index, Double peso){
        pesos.set(index, peso);
     }
@@ -61,6 +62,13 @@ public class NeuronioPerceptron {
         Utils utils = new Utils();
         for (int i = 0; i < qtd ; i++) {
             pesos.add(utils.getRandomDouble());
+        }
+        return pesos;
+    }
+
+    public List<Double> gerarPesosTeste(int qtdInicial, int qtdFinal , List<Double> pesosEntrada){
+        for (int j= qtdInicial; j < qtdFinal; j++) {
+            pesos.add(pesosEntrada.get(j));
         }
         return pesos;
     }

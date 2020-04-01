@@ -21,6 +21,11 @@ public class Rede {
         camadaSensor.gerarListaNeuroniosComPesos();
     }
 
+    //Responsavel por gerar os neuronios Camada Sensor com pesos
+    public  void gerarCamadaSensorComPesosTeste(List<Double> pesosEntrada){
+        camadaSensor.gerarListaNeuroniosComPesosTeste(pesosEntrada);
+    }
+
     //Responsavel por gerar e atualizar os dados da Camada saida
     public  void gerarDadosCamadaSensor(List<Double> dadosEntrada){
         camadaSensor.setDadosEntrada(dadosEntrada);
@@ -37,6 +42,11 @@ public class Rede {
     public CamadaOculta gerarCamadaOcultaComPesos(){
         camadaOculta.gerarListaNeuroniosComPesos();
         return camadaOculta;
+    }
+
+    //Responsavel por gerar os neuronios Camada Oculta com pesosFinais
+    public void gerarCamadaOcultaComPesosTeste(List<Double> pesosEntrada){
+        camadaOculta.gerarListaNeuroniosComPesosTeste(pesosEntrada);
     }
 
     //Responsavel por gerar a Camada oculta

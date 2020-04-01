@@ -11,3 +11,16 @@ qtdPesos: 7
 Camada Saida
 qtdNeuronios: 7
 qtdPesos: 0
+Alfa: 3000.0
+
+Camada Sensor
+qtdNeuronios: 63
+qtdPesos: 20
+
+Camada Oculta
+qtdNeuronios: 20
+qtdPesos: 7
+
+Camada Saida
+qtdNeuronios: 7
+qtdPesos: 0
