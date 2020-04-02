@@ -1,5 +1,7 @@
 package com.projeto.ia.redes.neurais;
 
+import org.decimal4j.util.DoubleRounder;
+
 import java.util.List;
 
 public class Teste {
@@ -13,50 +15,28 @@ public class Teste {
             List<String[]> pesosPlanilha = leituraPesos.dadosCSV();
             List<Double> pesosEntrada = leitura.gerarPesosEntrada(pesosPlanilha);
 
-
-            System.out.println(pesosEntrada);
-
             // Passo 0 - Estágio de Inicialização
             Rede rede = new Rede();
             rede.gerarCamadaSensorComPesosTeste(pesosEntrada);
             rede.gerarCamadaOcultaComPesosTeste(pesosEntrada);
-//            rede.gerarCamadaOcultaComPesos();
-//            rede.gerarCamadaSaida();
-//
-//            // Passo 1 - Iterador de epocas
-//
-//
-//                for (int i = 0; i < dadosPlanilha.size(); i++) {
-//
-//                    List<Double> dadosEntrada = leitura.gerarDadosEntrada(dadosPlanilha.get(i));
-//                    String letra = leitura.getTarget();
-//
-//                    // Passo 3, 4 e 5 - Estagio feedforward
-//                    rede.gerarDadosCamadaSensor(dadosEntrada);
-//                    rede.gerarDadosCamadaOculta();
-//                    rede.gerarDadosCamadaSaida();
-//
-//                    CamadaSensor camadaSensor= rede.getCamadaSensor();
-//                    CamadaOculta camadaOculta= rede.getCamadaOculta();
-//                    CamadaSaida camadaSaida = rede.getCamadaSaida();
-//
-//                    // Passo 6 e 7 - Estagio Backpropagation
-//                    int target[] = alteraTarget(letra);
-//                    Calcula calcula = new Calcula(camadaSensor.getNeuroniosSensores(),
-//                            camadaOculta.getNeuroniosProcessadores(),
-//                            camadaSaida.getNeuroniosSaida());
-//
-//                    Double [][] deltaoWJK = calcula.funcaoDeltaoWJK(target, alfa);
-//                    Double [][] deltaoVIJ = calcula.funcaoDeltaoVIJ(alfa);
-//                    List<Double> deltao_biasWK = calcula.funcaoBiasWK(alfa);
-//                    List<Double> deltao_biasVJ = calcula.funcaoBiasVJ(alfa);
-//
-//
-//                    // Passo 8 - Estagio de Atualização de Pesos
-//                    rede.atualizaPesosCamadaSensor(deltaoVIJ);
-//                    rede.atualizaPesosBiasCamadaOculta(deltao_biasVJ,deltaoWJK);
-//                    rede.atualizaBiasCamadaSaida(deltao_biasWK);
-//                }
+            rede.gerarCamadaSaida();
+
+            // Passo 1 - Iterador de epocas
+
+                for (int i = 0; i < dadosPlanilha.size(); i++) {
+
+                    List<Double> dadosEntrada = leitura.gerarDadosEntrada(dadosPlanilha.get(i));
+                    String letra = leitura.getTarget();
+                    int target[] = alteraTarget(letra);
+
+                    // Passo 3, 4 e 5 - Estagio feedforward
+                    rede.gerarDadosCamadaSensor(dadosEntrada);
+                    rede.gerarDadosCamadaOculta();
+                    rede.gerarDadosCamadaSaida();
+
+                    List<NeuronioPerceptron> neuronioPerceptrons = rede.getCamadaSaida().getNeuroniosSaida();
+                    printFinal(neuronioPerceptrons, target, letra);
+                }
             } catch (Exception e ){
             for (StackTraceElement tk: e.getStackTrace()) {
                 System.err.println(tk.getClassName());
@@ -98,5 +78,16 @@ public class Teste {
         }
 
         return null;
+    }
+
+    public static void printFinal(List<NeuronioPerceptron> neuronioPerceptrons, int [] target, String letra){
+
+        System.out.println(letra+"\n");
+        System.out.print("Targets:\tSaida:\n");
+        for (int i = 0; i < target.length ; i++) {
+            System.out.print(target[i]+"\t\t\t");
+            System.out.print(DoubleRounder.round(neuronioPerceptrons.get(i).getDado(), 4)+"\n");
+        }
+        System.out.println("=====================================");
     }
 }
