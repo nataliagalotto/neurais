@@ -1,16 +1,17 @@
 package com.projeto.ia.redes.neurais;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.util.List;
+
+/*
+	Classe responsável por realizar o aprendizado da rede.
+ */
 
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 3000.0;
-	static int epocas = 0;
+	static Double alfa = 3000.0;	// Alfa, critério de aprendizado
+	static int epocas = 0;			// Contador de épocas
 
-	//Area responsável por fazer o aprendizado da RedeNeural
 	public static void main(String[] args) {
 		try {
 			Leitura leitura = new Leitura("dados/entrada/caracteres-limpo.csv");

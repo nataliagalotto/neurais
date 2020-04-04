@@ -1,21 +1,32 @@
 package com.projeto.ia.redes.neurais;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    Classe pai que fornece os métodos utilizados por cada uma das camadas: Sensor,
+    Camada Oculta e Saída
+ */
 public class CamadaBase {
 
-    List<NeuronioPerceptron> neuroniosSensores = new ArrayList<>();
-    List<NeuronioPerceptron> neuroniosProcessadores = new ArrayList<>();
-    List<NeuronioPerceptron> neuroniosSaida = new ArrayList<>();
-    int qtdNeuronios;
-    int qtdPesos;
+    List<NeuronioPerceptron> neuroniosSensores = new ArrayList<>();         //Estrutura que armazena neuroniosSensores
+    List<NeuronioPerceptron> neuroniosProcessadores = new ArrayList<>();    //Estrutura que armazena neuronios Processadores
+    List<NeuronioPerceptron> neuroniosSaida = new ArrayList<>();            //Estrutura que armazena Neurônios de Saída
+    int qtdNeuronios;                                                       //Variável que controla a qtd de neuronios da camada
+    int qtdPesos;                                                           //Variável para controle da quantidade de pesos de cada neurônio
+
+
+    //Método responsável por aplicar a função de ativação 1 / (1 + e^(-x))
 
     public Double funcaoAtivacao(Double somatorio){
         return 1/(1 + (Math.exp(-somatorio)));
     }
 
-    //por que indice??
+    /*
+        Método responsável por realizar a soma ponderada
+        Recebe os dados, aplica os pesos, realiza a soma,
+        adiciona o bias e retorna o resultado
+     */
+
     public Double somatorio ( Integer indice, Double bias, List<NeuronioPerceptron> neuronioPerceptrons){
         Double somatorio = 0.0;
         for (NeuronioPerceptron neuronio : neuronioPerceptrons){
@@ -29,7 +40,7 @@ public class CamadaBase {
     }
 
 
-
+    //Getters e Setters da classe
     public int getQtdNeuronios() {
         return qtdNeuronios;
     }

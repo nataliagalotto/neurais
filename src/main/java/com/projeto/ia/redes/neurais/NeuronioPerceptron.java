@@ -11,8 +11,8 @@ public class NeuronioPerceptron {
     // ou seja, o resultado após a aplicaçao da funçao
     // de ativação
     Double dado;
-    Double somatorio;
-    Double bias;
+    Double somatorio;   //Variável que armazena a soma ponderada das dados de entrada do neurônio
+    Double bias;        //Variável que armazana o bias do neurônio
 
     public NeuronioPerceptron() {
         this.bias = 1.0;

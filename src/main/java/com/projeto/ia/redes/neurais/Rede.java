@@ -1,7 +1,12 @@
 package com.projeto.ia.redes.neurais;
-
 import java.util.ArrayList;
 import java.util.List;
+/*
+    Classe responsável por construir a rede
+    instanciando as classes com seus pesos
+    e quantidade de neurônios
+ */
+
 
 //Responsavel por gerar as Camadas e administrar elas
 public class Rede {
@@ -17,11 +22,13 @@ public class Rede {
     }
 
     //Responsavel por gerar os neuronios Camada Sensor com pesos
+    //aleatórios
     public  void gerarCamadaSensorComPesos(){
         camadaSensor.gerarListaNeuroniosComPesos();
     }
 
     //Responsavel por gerar os neuronios Camada Sensor com pesos
+    //obtidos após o treinamento
     public  void gerarCamadaSensorComPesosTeste(List<Double> pesosEntrada){
         camadaSensor.gerarListaNeuroniosComPesosTeste(pesosEntrada);
     }
@@ -32,19 +39,21 @@ public class Rede {
         camadaSensor.atualizaDadosNeuronios();
     }
 
-    //Responsavel por gerar e atualizar os dados da Camada saida
+    //Responsavel por atualizar os pesos da camada sensor
     public  CamadaSensor atualizaPesosCamadaSensor(Double [][] deltao_vIJ){
         camadaSensor.atualizaPesosVJ(deltao_vIJ);
         return camadaSensor;
     }
 
     //Responsavel por gerar os neuronios Camada Oculta com pesos
+    //aleatórios
     public CamadaOculta gerarCamadaOcultaComPesos(){
         camadaOculta.gerarListaNeuroniosComPesos();
         return camadaOculta;
     }
 
     //Responsavel por gerar os neuronios Camada Oculta com pesosFinais
+    //obtidos após o treinamento
     public void gerarCamadaOcultaComPesosTeste(List<Double> pesosEntrada){
         camadaOculta.gerarListaNeuroniosComPesosTeste(pesosEntrada);
     }
@@ -55,6 +64,7 @@ public class Rede {
         camadaOculta.atualizaDadosNeuronios();
     }
 
+    //Responsável por atualizar os pesos do Bias da camada oculta
     public void atualizaPesosBiasCamadaOculta(List<Double> deltao_biasVJ, Double [][] deltao_WJK){
         camadaOculta.atualizaBiasVJ(deltao_biasVJ);
         camadaOculta.atualizaPesosWK(deltao_WJK);
@@ -75,6 +85,7 @@ public class Rede {
         camadaSaida.atualizaBiasWK(deltao_biasWK);
     }
 
+    //Getters da classe
     public CamadaSensor getCamadaSensor() {
         return camadaSensor;
     }

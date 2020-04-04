@@ -1,11 +1,7 @@
 package com.projeto.ia.redes.neurais;
-
 import java.util.ArrayList;
 import java.util.List;
 
-//dado = zzinho
-//somatorio = z_in
-//peso = w
 public class CamadaOculta extends CamadaBase {
 
 
