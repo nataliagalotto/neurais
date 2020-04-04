@@ -41,6 +41,23 @@ public class Leitura {
     }
 
     /*
+        Método responsável por realizar a leitura do arquivo CSV
+        contendo os dados de entrada e armazená-los numa List de
+        Strings, onde cada String armazena uma linha do arquivo
+        CSV
+     */
+    public List<String[]> dadosCSV(String caminhoArquivo){
+        try {
+            Reader reader = new FileReader(caminhoArquivo);
+            CSVReader csvReader = new CSVReader(reader);
+            return csvReader.readAll();
+        }catch (Exception e ){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    /*
         Método que recebe a List acima e, para cada uma das
         linhas converte o valor que está em String para Double.
         Após isso armazena numa estrutura List de Doubles.
@@ -63,7 +80,10 @@ public class Leitura {
         txt. A Classe Teste recebe esses dados para gerar os pesos
         da rede "treinada"
      */
-    public List<Double> gerarPesosEntrada(List<String []> pesosPlanilha){
+    public List<Double> gerarPesosEntrada(String caminhoArquivo){
+
+        List<String[]> pesosPlanilha = dadosCSV(caminhoArquivo);
+
         List<Double> pesos = new ArrayList<>();
 
         for (String[] peso : pesosPlanilha){
@@ -76,7 +96,7 @@ public class Leitura {
     /*
         Método auxiliar responsável criar um arquivo txt
      */
-    public FileWriter geraArquivo(){
+    public FileWriter geraArquivo(String caminhoArquivo){
         try{
             File file = new File(caminhoArquivo);
 
@@ -109,7 +129,7 @@ public class Leitura {
      */
     public void printaTexto(String texto){
         try{
-            FileWriter writer = geraArquivo();
+            FileWriter writer = geraArquivo(caminhoArquivo);
             writer.write(texto+"\n");
             writer.close();
 
@@ -125,7 +145,7 @@ public class Leitura {
      */
     public void printaValoresInicias(String texto,CamadaBase camadaBase){
         try{
-            FileWriter writer = geraArquivo();
+            FileWriter writer = geraArquivo(caminhoArquivo);
             writer.write(texto+"\n");
             writer.write("qtdNeuronios: "+camadaBase.qtdNeuronios+"\n");
             writer.write("qtdPesos: "+camadaBase.qtdPesos+"\n");
@@ -140,9 +160,10 @@ public class Leitura {
         Método responsável por imprimir os pesos iniciais
         da rede
      */
-    public void printaPesosInicias(List<NeuronioPerceptron> neuronioPerceptrons, String texto){
+
+    public void printaPesos(List<NeuronioPerceptron> neuronioPerceptrons, String texto, String nomeArquivo){
         try{
-            FileWriter writer = geraArquivo();
+            FileWriter writer = geraArquivo(caminhoArquivo+nomeArquivo);
             writer.write(texto+"\n");
 
             for (NeuronioPerceptron neuronio : neuronioPerceptrons){
@@ -156,13 +177,28 @@ public class Leitura {
         }
     }
 
+    public void printaBiasPesos(Bias bias, String texto, String nomeArquivo){
+        try{
+            FileWriter writer = geraArquivo(caminhoArquivo+nomeArquivo);
+            writer.write(texto+"\n");
+
+            for (Double peso : bias.getPesos()){
+                writer.write(peso.toString()+"\n");
+            }
+
+            writer.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     /*
         Método auxiliar utilizado para gerar
         arquivo com os erros cometidos pela rede
      */
     public void printaErros(Double[] valores){
         try{
-            FileWriter writer = geraArquivo();
+            FileWriter writer = geraArquivo(caminhoArquivo);
             writer.write("Errors\n");
             for (int i = 0; i < valores.length; i++) {
                 writer.write(valores[i]+"\n");
@@ -186,5 +222,13 @@ public class Leitura {
         return target;
     }
 
-
+    public void deletarDiretorio(){
+        File folder = new File("dados/saida/");
+        if (folder.isDirectory()) {
+            File[] sun = folder.listFiles();
+            for (File toDelete : sun) {
+                toDelete.delete();
+            }
+        }
+    }
 }

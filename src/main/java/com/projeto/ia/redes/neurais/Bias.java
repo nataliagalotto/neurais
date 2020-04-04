@@ -35,4 +35,11 @@ public class Bias {
         }
         return pesos;
     }
+
+    public List<Double> gerarPesosTeste(List<Double> pesosEntrada){
+        for (int j= 0; j < pesosEntrada.size(); j++) {
+            pesos.add(pesosEntrada.get(j));
+        }
+        return pesos;
+    }
 }

@@ -16,16 +16,17 @@ public class Teste {
         //contendo os dados de entrada para o teste
         try {
             Leitura leitura = new Leitura("dados/entrada/caracteres-ruido.csv"); //recebe os dados de entrada
-            Leitura leituraPesos = new Leitura("dados/saida/pesosFinais.txt");      //recebe os pesos após o treinamento
 
             //Armazena os dados lidos em estruturas
             //List de Strings
             List<String[]> dadosPlanilha = leitura.dadosCSV();
-            List<String[]> pesosPlanilha = leituraPesos.dadosCSV();
 
             //Utiliza o método da classe Leitura para "setar" os pesos
             //obtidos no treinamento na rede
-            List<Double> pesosEntrada = leitura.gerarPesosEntrada(pesosPlanilha);
+            List<Double> pesosEntradaSensor = leitura.gerarPesosEntrada("dados/saida/pesosFinaisSensor.txt");
+            List<Double> pesosEntradaOculta = leitura.gerarPesosEntrada("dados/saida/pesosFinaisOculta.txt");
+            List<Double> pesosBiasEntradaSensor = leitura.gerarPesosEntrada("dados/saida/pesoBiasFinaisSensor.txt");
+            List<Double> pesosBiasEntradaOculta = leitura.gerarPesosEntrada("dados/saida/pesoBiasFinaisOculta.txt");
 
             //Utiliza os métodos da classe Rede
             //para construir uma rede com os parâmetros
@@ -35,10 +36,9 @@ public class Teste {
             //nos neuronios da camada sensor e
             //da camada oculta - sem perder seu significado
             Rede rede = new Rede();
-            rede.gerarCamadaSensorComPesosTeste(pesosEntrada);
-            rede.gerarCamadaOcultaComPesosTeste(pesosEntrada);
+            rede.gerarCamadaSensorComPesosTeste(pesosEntradaSensor,pesosBiasEntradaSensor);
+            rede.gerarCamadaOcultaComPesosTeste(pesosEntradaOculta,pesosBiasEntradaOculta);
             rede.gerarCamadaSaida();
-
 
             //Para cada entrada do arquivo de dados de entrada
             //realiza a leitura e computa os resultados na rede

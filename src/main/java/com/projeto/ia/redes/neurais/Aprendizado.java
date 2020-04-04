@@ -86,9 +86,10 @@ public class Aprendizado {
 			leitura.printaValoresInicias("\nCamada Saida", camadaSaida);
 
 			Leitura leitura2 = new Leitura("dados/saida/pesosIniciais.txt");
-			leitura2.printaPesosInicias(camadaSensor.neuroniosSensores, "Pesos Camada Sensor");
-			leitura2.printaPesosInicias(camadaOculta.neuroniosProcessadores, "Pesos Camada Escondida");
-
+			leitura2.printaPesos(camadaSensor.neuroniosSensores, "Pesos Camada Sensor","");
+			leitura2.printaPesos(camadaOculta.neuroniosProcessadores, "Pesos Camada Escondida","");
+			leitura2.printaBiasPesos(camadaSensor.bias, "Pesos Bias Camada Sensor", "");
+			leitura2.printaBiasPesos(camadaOculta.bias, "Pesos Bias Camada Oculta", "");
 		}catch (Exception e){
 			System.out.println(e.getMessage());
 		}
@@ -96,9 +97,11 @@ public class Aprendizado {
 
 	public static void printaInformacoesFinais(CamadaSensor camadaSensor, CamadaOculta camadaOculta){
 		try{
-			Leitura leitura = new Leitura("dados/saida/pesosFinais.txt");
-			leitura.printaPesosInicias(camadaSensor.neuroniosSensores, "Pesos Camada Sensor");
-			leitura.printaPesosInicias(camadaOculta.neuroniosProcessadores, "Pesos Camada Escondida");
+			Leitura leitura = new Leitura("dados/saida/");
+			leitura.printaPesos(camadaSensor.neuroniosSensores, "","pesosFinaisSensor.txt");
+			leitura.printaPesos(camadaOculta.neuroniosProcessadores, "","pesosFinaisOculta.txt");
+			leitura.printaBiasPesos(camadaSensor.bias, "", "pesoBiasFinaisSensor.txt");
+			leitura.printaBiasPesos(camadaOculta.bias, "", "pesoBiasFinaisOculta.txt");
 
 		}catch (Exception e){
 			System.out.println(e.getMessage());

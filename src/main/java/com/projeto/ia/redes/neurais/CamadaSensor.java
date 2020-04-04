@@ -41,6 +41,10 @@ public class CamadaSensor extends CamadaBase{
         return neuroniosSensores;
     }
 
+    public void gerarBiasComPesosTeste(List<Double> pesosBiasEntrada){
+        bias.gerarPesosTeste(pesosBiasEntrada);
+    }
+
     public List<NeuronioPerceptron> atualizaDadosNeuronios(){
         for (NeuronioPerceptron neuroniosSensor : neuroniosSensores){
             for(Double dado : dadosEntrada){

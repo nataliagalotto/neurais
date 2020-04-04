@@ -29,8 +29,9 @@ public class Rede {
 
     //Responsavel por gerar os neuronios Camada Sensor com pesos
     //obtidos após o treinamento
-    public  void gerarCamadaSensorComPesosTeste(List<Double> pesosEntrada){
+    public  void gerarCamadaSensorComPesosTeste(List<Double> pesosEntrada,List<Double> pesosBiasEntrada){
         camadaSensor.gerarListaNeuroniosComPesosTeste(pesosEntrada);
+        camadaSensor.gerarBiasComPesosTeste(pesosBiasEntrada);
     }
 
     //Responsavel por gerar e atualizar os dados da Camada saida
@@ -54,8 +55,9 @@ public class Rede {
 
     //Responsavel por gerar os neuronios Camada Oculta com pesosFinais
     //obtidos após o treinamento
-    public void gerarCamadaOcultaComPesosTeste(List<Double> pesosEntrada){
+    public void gerarCamadaOcultaComPesosTeste(List<Double> pesosEntrada, List<Double> pesosBiasEntrada){
         camadaOculta.gerarListaNeuroniosComPesosTeste(pesosEntrada);
+        camadaOculta.gerarBiasComPesosTeste(pesosBiasEntrada);
     }
 
     //Responsavel por gerar a Camada oculta
