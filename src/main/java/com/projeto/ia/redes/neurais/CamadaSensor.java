@@ -9,13 +9,16 @@ public class CamadaSensor extends CamadaBase{
 
     List<Double> dadosEntrada = new ArrayList<>();
 
+
     public CamadaSensor() {
         this.qtdPesos = 20;
         this.qtdNeuronios = 63;
     }
 
     public List<NeuronioPerceptron> gerarListaNeuroniosComPesos(){
+        bias.gerarPesos(qtdPesos);
         NeuronioFactory neuronioFactory = new NeuronioFactory();
+
         for (int i = 0; i < qtdNeuronios ; i++) {
             NeuronioPerceptron neuronioPerceptron = neuronioFactory.getNeuronio();
             neuronioPerceptron.gerarPesos(qtdPesos);
@@ -47,11 +50,19 @@ public class CamadaSensor extends CamadaBase{
         return neuroniosSensores;
     }
 
+    public void atualizaBiasVJ(List<Double> deltao_biasVJ){
+        for (int j = 0; j < qtdPesos; j++) {
+            Double peso = (bias.getPesos().get(j) + deltao_biasVJ.get(j));
+            bias.setPeso(j,peso);;
+        }
+    }
+
     public List<NeuronioPerceptron> atualizaPesosVJ(Double [][] deltao_vIJ){
         for (int k = 0; k < qtdNeuronios; k++) {
             for (int j = 0; j < qtdPesos; j++) {
                 Double peso = (neuroniosSensores.get(k).getPeso(j) + deltao_vIJ[j][k]);
                 neuroniosSensores.get(k).setPeso(j , peso);
+
             }
         }
 
@@ -62,4 +73,6 @@ public class CamadaSensor extends CamadaBase{
     public void setDadosEntrada(List<Double> dadosEntrada) {
         this.dadosEntrada = dadosEntrada;
     }
+
+
 }

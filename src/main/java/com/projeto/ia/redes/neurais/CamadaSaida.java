@@ -33,14 +33,14 @@ public class CamadaSaida extends CamadaBase {
 
     //Método utilizado para atualizar os dados
     //do neurônio no passo backpropagation
-    public List<NeuronioPerceptron> atualizaDadosNeuronios(){
+    public List<NeuronioPerceptron> atualizaDadosNeuronios(Bias biasOculta){
 
         //Para cada um dos neurônios
         //utiliza os valores de correcao
         //de erro para atualizar os
         //valores da camada
         for (int i = 0; i < qtdNeuronios ; i++) {
-            Double bias = neuroniosSaida.get(i).getBias();
+            Double bias = biasOculta.getPesos().get(i);
             Double y_in = somatorio(i, bias, neuroniosProcessadores);
             Double yzinho = funcaoAtivacao(y_in);
 
@@ -50,13 +50,5 @@ public class CamadaSaida extends CamadaBase {
         return neuroniosSaida;
     }
 
-    public List<NeuronioPerceptron> atualizaBiasWK(List<Double> deltao_biasWK){
-        for (int k = 0; k < neuroniosSaida.size(); k++) {
-            NeuronioPerceptron neuronioSaida = neuroniosSaida.get(k);
-            neuronioSaida.setBias(neuronioSaida.getBias() + deltao_biasWK.get(k));
-        }
-
-        return neuroniosSaida;
-    }
 
 }

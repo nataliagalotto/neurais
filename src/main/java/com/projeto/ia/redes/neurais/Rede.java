@@ -40,13 +40,13 @@ public class Rede {
     }
 
     //Responsavel por atualizar os pesos da camada sensor
-    public  CamadaSensor atualizaPesosCamadaSensor(Double [][] deltao_vIJ){
+    public  CamadaSensor atualizaPesosCamadaSensor(Double [][] deltao_vIJ, List<Double> deltao_biasVJ){
+        camadaSensor.atualizaBiasVJ(deltao_biasVJ);
         camadaSensor.atualizaPesosVJ(deltao_vIJ);
         return camadaSensor;
     }
 
-    //Responsavel por gerar os neuronios Camada Oculta com pesos
-    //aleatórios
+    //Responsavel por gerar os neuronios Camada Oculta com pesosInicias
     public CamadaOculta gerarCamadaOcultaComPesos(){
         camadaOculta.gerarListaNeuroniosComPesos();
         return camadaOculta;
@@ -61,12 +61,12 @@ public class Rede {
     //Responsavel por gerar a Camada oculta
     public void gerarDadosCamadaOculta(){
         camadaOculta.setNeuroniosSensores(camadaSensor.getNeuroniosSensores());
-        camadaOculta.atualizaDadosNeuronios();
+        camadaOculta.atualizaDadosNeuronios(camadaSensor.getBias());
     }
 
     //Responsável por atualizar os pesos do Bias da camada oculta
-    public void atualizaPesosBiasCamadaOculta(List<Double> deltao_biasVJ, Double [][] deltao_WJK){
-        camadaOculta.atualizaBiasVJ(deltao_biasVJ);
+    public void atualizaPesosBiasCamadaOculta(Double [][] deltao_WJK, List<Double> deltao_biasWK){
+        camadaOculta.atualizaBiasWK(deltao_biasWK);
         camadaOculta.atualizaPesosWK(deltao_WJK);
     }
 
@@ -78,11 +78,7 @@ public class Rede {
     //Responsavel por atualizar o dados da Camada saida
     public void gerarDadosCamadaSaida(){
         camadaSaida.setNeuroniosProcessadores(camadaOculta.getNeuroniosProcessadores());
-        camadaSaida.atualizaDadosNeuronios();
-    }
-
-    public void atualizaBiasCamadaSaida(List<Double> deltao_biasWK){
-        camadaSaida.atualizaBiasWK(deltao_biasWK);
+        camadaSaida.atualizaDadosNeuronios(camadaOculta.getBias());
     }
 
     //Getters da classe

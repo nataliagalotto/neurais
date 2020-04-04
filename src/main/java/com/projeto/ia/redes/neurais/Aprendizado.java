@@ -9,7 +9,7 @@ import java.util.List;
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 3000.0;	// Alfa, critério de aprendizado
+	static Double alfa = 10.0;	// Alfa, critério de aprendizado
 	static int epocas = 0;			// Contador de épocas
 
 	public static void main(String[] args) {
@@ -56,9 +56,8 @@ public class Aprendizado {
 					printaErros(calcula.getErro());
 
 					// Passo 8 - Estagio de Atualização de Pesos
-					rede.atualizaPesosCamadaSensor(deltaoVIJ);
-					rede.atualizaPesosBiasCamadaOculta(deltao_biasVJ,deltaoWJK);
-					rede.atualizaBiasCamadaSaida(deltao_biasWK);
+					rede.atualizaPesosCamadaSensor(deltaoVIJ,deltao_biasVJ);
+					rede.atualizaPesosBiasCamadaOculta(deltaoWJK, deltao_biasWK);
 				}
 				epocas++;
 			}

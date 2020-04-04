@@ -11,6 +11,7 @@ public class CamadaOculta extends CamadaBase {
     }
 
     public List<NeuronioPerceptron> gerarListaNeuroniosComPesos(){
+        bias.gerarPesos(qtdPesos);
         NeuronioFactory neuronioFactory = new NeuronioFactory();
 
         for (int i = 0; i < qtdNeuronios ; i++) { //qtdNeuronios = 20 (correto!!)
@@ -36,27 +37,18 @@ public class CamadaOculta extends CamadaBase {
         return neuroniosProcessadores;
     }
 
-    public List<NeuronioPerceptron> atualizaDadosNeuronios(){
+    public List<NeuronioPerceptron> atualizaDadosNeuronios(Bias biasSensor){
         //Revisar o somatorio na classe CamadaBase um bias a mais na
         //Fazer apenas a inicialização dos neuronios e qtdPesos
         //Somatorio e demais tarefas passar para Aprendizado
 
         for (int i = 0; i < qtdNeuronios ; i++) { //qtdNeuronios = 20 (correto!!)
-            Double bias = neuroniosProcessadores.get(i).getBias();
+            Double bias = biasSensor.getPesos().get(i);
             Double z_in = somatorio( i, bias, neuroniosSensores);
             Double zzinho = funcaoAtivacao(z_in);
 
             neuroniosProcessadores.get(i).setSomatorio(z_in);
             neuroniosProcessadores.get(i).setDado(zzinho);
-        }
-
-        return neuroniosProcessadores;
-    }
-
-    public List<NeuronioPerceptron> atualizaBiasVJ(List<Double> deltao_biasVJ){
-        for (int k = 0; k < neuroniosProcessadores.size(); k++) {
-            NeuronioPerceptron neuroniosProcessador = neuroniosProcessadores.get(k);
-            neuroniosProcessador.setBias(neuroniosProcessador.getBias() + deltao_biasVJ.get(k));
         }
 
         return neuroniosProcessadores;
@@ -73,5 +65,10 @@ public class CamadaOculta extends CamadaBase {
         return neuroniosProcessadores;
     }
 
-
+    public void atualizaBiasWK(List<Double> deltao_biasWK){
+        for (int j = 0; j < qtdPesos; j++) {
+            Double peso = (bias.getPesos().get(j) + deltao_biasWK.get(j));
+            bias.setPeso(j,peso);;
+        }
+    }
 }

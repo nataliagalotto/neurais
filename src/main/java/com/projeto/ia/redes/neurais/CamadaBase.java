@@ -13,6 +13,7 @@ public class CamadaBase {
     List<NeuronioPerceptron> neuroniosSaida = new ArrayList<>();            //Estrutura que armazena Neurônios de Saída
     int qtdNeuronios;                                                       //Variável que controla a qtd de neuronios da camada
     int qtdPesos;                                                           //Variável para controle da quantidade de pesos de cada neurônio
+    Bias bias = new Bias();
 
 
     //Método responsável por aplicar a função de ativação 1 / (1 + e^(-x))
@@ -79,5 +80,9 @@ public class CamadaBase {
 
     public void setNeuroniosSaida(List<NeuronioPerceptron> neuroniosSaida) {
         this.neuroniosSaida = neuroniosSaida;
+    }
+
+    public Bias getBias() {
+        return bias;
     }
 }

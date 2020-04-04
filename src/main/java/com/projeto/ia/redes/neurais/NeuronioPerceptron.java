@@ -12,11 +12,6 @@ public class NeuronioPerceptron {
     // de ativação
     Double dado;
     Double somatorio;   //Variável que armazena a soma ponderada das dados de entrada do neurônio
-    Double bias;        //Variável que armazana o bias do neurônio
-
-    public NeuronioPerceptron() {
-        this.bias = 1.0;
-    }
 
     public List<Double> getPesos() {
         return pesos;
@@ -48,14 +43,6 @@ public class NeuronioPerceptron {
 
     public void setSomatorio(Double somatorio) {
         this.somatorio = somatorio;
-    }
-
-    public Double getBias() {
-        return bias;
-    }
-
-    public void setBias(Double bias) {
-        this.bias = bias;
     }
 
     public List<Double> gerarPesos(int qtd){
