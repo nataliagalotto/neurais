@@ -1,4 +1,7 @@
-package com.projeto.ia.redes.neurais;
+package com.projeto.ia.redes.neurais.servico;
+import com.projeto.ia.redes.neurais.entidades.Bias;
+import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
+
 import java.util.ArrayList;
 import java.util.List;
 

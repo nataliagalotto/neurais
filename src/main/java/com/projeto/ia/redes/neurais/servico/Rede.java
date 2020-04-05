@@ -1,5 +1,4 @@
-package com.projeto.ia.redes.neurais;
-import java.util.ArrayList;
+package com.projeto.ia.redes.neurais.servico;
 import java.util.List;
 /*
     Classe responsável por construir a rede

@@ -1,4 +1,4 @@
-package com.projeto.ia.redes.neurais;
+package com.projeto.ia.redes.neurais.entidades;
 
 import java.util.ArrayList;
 import java.util.List;

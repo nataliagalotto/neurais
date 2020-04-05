@@ -1,5 +1,8 @@
-package com.projeto.ia.redes.neurais;
-import java.util.ArrayList;
+package com.projeto.ia.redes.neurais.servico;
+import com.projeto.ia.redes.neurais.entidades.Bias;
+import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
+import com.projeto.ia.redes.neurais.factory.NeuronioFactory;
+
 import java.util.List;
 
 /*

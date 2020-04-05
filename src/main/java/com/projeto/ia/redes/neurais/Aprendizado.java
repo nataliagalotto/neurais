@@ -1,4 +1,7 @@
 package com.projeto.ia.redes.neurais;
+import com.projeto.ia.redes.neurais.arquivo.Escrita;
+import com.projeto.ia.redes.neurais.arquivo.Leitura;
+import com.projeto.ia.redes.neurais.servico.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.List;
 
@@ -9,8 +12,9 @@ import java.util.List;
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 10.0;	// Alfa, critério de aprendizado
+	static Double alfa = 0.5;	// Alfa, critério de aprendizado
 	static int epocas = 0;			// Contador de épocas
+	static int epocaFinal = 2000;
 
 	public static void main(String[] args) {
 		try {
@@ -25,7 +29,7 @@ public class Aprendizado {
 			printaInformacoesInicias(rede.getCamadaSensor(), rede.getCamadaOculta(), rede.getCamadaSaida());
 
 			// Passo 1 - Iterador de epocas
-			while (epocas < alfa){
+			while (epocas < epocaFinal){
 				System.out.println("Epoca: "+ epocas);
 
 				for (int i = 0; i < dadosPlanilha.size(); i++) {
@@ -79,17 +83,17 @@ public class Aprendizado {
 
 	public static void printaInformacoesInicias(CamadaSensor camadaSensor, CamadaOculta camadaOculta, CamadaSaida camadaSaida){
 		try{
-			Leitura leitura = new Leitura("dados/saida/valoresIniciais.txt");
-			leitura.printaTexto("Alfa: "+ alfa);
-			leitura.printaValoresInicias("\nCamada Sensor", camadaSensor);
-			leitura.printaValoresInicias("\nCamada Oculta", camadaOculta);
-			leitura.printaValoresInicias("\nCamada Saida", camadaSaida);
+			Escrita escrita = new Escrita("dados/saida/valoresIniciais.txt");
+			escrita.printaTexto("Alfa: "+ alfa);
+			escrita.printaValoresInicias("\nCamada Sensor", camadaSensor);
+			escrita.printaValoresInicias("\nCamada Oculta", camadaOculta);
+			escrita.printaValoresInicias("\nCamada Saida", camadaSaida);
 
-			Leitura leitura2 = new Leitura("dados/saida/pesosIniciais.txt");
-			leitura2.printaPesos(camadaSensor.neuroniosSensores, "Pesos Camada Sensor","");
-			leitura2.printaPesos(camadaOculta.neuroniosProcessadores, "Pesos Camada Escondida","");
-			leitura2.printaBiasPesos(camadaSensor.bias, "Pesos Bias Camada Sensor", "");
-			leitura2.printaBiasPesos(camadaOculta.bias, "Pesos Bias Camada Oculta", "");
+			Escrita escrita2 = new Escrita("dados/saida/pesosIniciais.txt");
+			escrita2.printaPesos(camadaSensor.neuroniosSensores, "Pesos Camada Sensor","");
+			escrita2.printaPesos(camadaOculta.neuroniosProcessadores, "Pesos Camada Escondida","");
+			escrita2.printaBiasPesos(camadaSensor.bias, "Pesos Bias Camada Sensor", "");
+			escrita2.printaBiasPesos(camadaOculta.bias, "Pesos Bias Camada Oculta", "");
 		}catch (Exception e){
 			System.out.println(e.getMessage());
 		}
@@ -97,11 +101,11 @@ public class Aprendizado {
 
 	public static void printaInformacoesFinais(CamadaSensor camadaSensor, CamadaOculta camadaOculta){
 		try{
-			Leitura leitura = new Leitura("dados/saida/");
-			leitura.printaPesos(camadaSensor.neuroniosSensores, "","pesosFinaisSensor.txt");
-			leitura.printaPesos(camadaOculta.neuroniosProcessadores, "","pesosFinaisOculta.txt");
-			leitura.printaBiasPesos(camadaSensor.bias, "", "pesoBiasFinaisSensor.txt");
-			leitura.printaBiasPesos(camadaOculta.bias, "", "pesoBiasFinaisOculta.txt");
+			Escrita escrita = new Escrita("dados/saida/");
+			escrita.printaPesos(camadaSensor.neuroniosSensores, "","pesosFinaisSensor.txt");
+			escrita.printaPesos(camadaOculta.neuroniosProcessadores, "","pesosFinaisOculta.txt");
+			escrita.printaBiasPesos(camadaSensor.bias, "", "pesoBiasFinaisSensor.txt");
+			escrita.printaBiasPesos(camadaOculta.bias, "", "pesoBiasFinaisOculta.txt");
 
 		}catch (Exception e){
 			System.out.println(e.getMessage());
@@ -110,8 +114,8 @@ public class Aprendizado {
 
 	public static void printaErros(Double[] erros){
 		try {
-			Leitura leitura = new Leitura("dados/saida/erros.txt");
-			leitura.printaErros(erros);
+			Escrita escrita = new Escrita("dados/saida/erros.txt");
+			escrita.printaErros(erros);
 		}catch (Exception e){
 			System.out.println(e.getMessage());
 		}

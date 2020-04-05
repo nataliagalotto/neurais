@@ -1,4 +1,7 @@
 package com.projeto.ia.redes.neurais;
+import com.projeto.ia.redes.neurais.arquivo.Leitura;
+import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
+import com.projeto.ia.redes.neurais.servico.Rede;
 import org.decimal4j.util.DoubleRounder;
 import java.util.List;
 

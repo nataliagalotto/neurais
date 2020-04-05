@@ -1,4 +1,6 @@
-package com.projeto.ia.redes.neurais;
+package com.projeto.ia.redes.neurais.factory;
+
+import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
 
 public class NeuronioFactory {
 

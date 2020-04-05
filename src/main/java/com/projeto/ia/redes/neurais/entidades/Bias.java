@@ -1,4 +1,6 @@
-package com.projeto.ia.redes.neurais;
+package com.projeto.ia.redes.neurais.entidades;
+
+import com.projeto.ia.redes.neurais.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +39,7 @@ public class Bias {
     }
 
     public List<Double> gerarPesosTeste(List<Double> pesosEntrada){
-        for (int j= 0; j < pesosEntrada.size(); j++) {
-            pesos.add(pesosEntrada.get(j));
-        }
+        pesos.addAll(pesosEntrada);
         return pesos;
     }
 }

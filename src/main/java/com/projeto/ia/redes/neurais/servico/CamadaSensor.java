@@ -1,4 +1,7 @@
-package com.projeto.ia.redes.neurais;
+package com.projeto.ia.redes.neurais.servico;
+
+import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
+import com.projeto.ia.redes.neurais.factory.NeuronioFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +14,7 @@ public class CamadaSensor extends CamadaBase{
 
 
     public CamadaSensor() {
-        this.qtdPesos = 20;
+        this.qtdPesos = 63;
         this.qtdNeuronios = 63;
     }
 
