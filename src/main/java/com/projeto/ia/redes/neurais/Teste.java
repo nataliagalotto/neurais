@@ -1,4 +1,5 @@
 package com.projeto.ia.redes.neurais;
+import com.projeto.ia.redes.neurais.arquivo.Escrita;
 import com.projeto.ia.redes.neurais.arquivo.Leitura;
 import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
 import com.projeto.ia.redes.neurais.servico.Rede;
@@ -120,13 +121,10 @@ public class Teste {
         com a classificação dada pela Rede
      */
     public static void printFinal(List<NeuronioPerceptron> neuronioPerceptrons, int [] target, String letra){
+        Escrita escrita = new Escrita("dados/saida/validaTeste.txt");
+        escrita.printFinalComRound(neuronioPerceptrons,target,letra);
 
-        System.out.println(letra+"\n");
-        System.out.print("Targets:\tSaida:\n");
-        for (int i = 0; i < target.length ; i++) {
-            System.out.print(target[i]+"\t\t\t");
-            System.out.print(DoubleRounder.round(neuronioPerceptrons.get(i).getDado(), 4)+"\n");
-        }
-        System.out.println("=====================================");
+        Escrita escrita2 = new Escrita("dados/saida/validaTesteSemArredondar.txt");
+        escrita2.printFinalSemRound(neuronioPerceptrons,target,letra);
     }
 }

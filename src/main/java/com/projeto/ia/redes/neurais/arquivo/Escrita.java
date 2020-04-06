@@ -3,6 +3,7 @@ package com.projeto.ia.redes.neurais.arquivo;
 import com.projeto.ia.redes.neurais.entidades.Bias;
 import com.projeto.ia.redes.neurais.servico.CamadaBase;
 import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
+import org.decimal4j.util.DoubleRounder;
 
 import java.io.FileWriter;
 import java.util.List;
@@ -102,6 +103,48 @@ public class Escrita extends Arquivo{
             }
 
             writer.write("===============================\n");
+            writer.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /*
+        Método responsável por imprimir os resultados finais
+        com a classificação dada pela Rede
+     */
+    public void printFinalComRound(List<NeuronioPerceptron> neuronioPerceptrons, int [] target, String letra){
+        try{
+            FileWriter writer = geraArquivo(caminhoArquivo);
+
+            writer.write(letra+"\n");
+            writer.write("Targets:\tSaida:\n");
+            for (int i = 0; i < target.length ; i++) {
+                writer.write(target[i]+"\t\t\t");
+                writer.write(DoubleRounder.round(neuronioPerceptrons.get(i).getDado(), 4)+"\n");
+            }
+            writer.write("=====================================\n");
+            writer.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /*
+    Método responsável por imprimir os resultados finais
+    com a classificação dada pela Rede
+ */
+    public void printFinalSemRound(List<NeuronioPerceptron> neuronioPerceptrons, int [] target, String letra){
+        try{
+            FileWriter writer = geraArquivo(caminhoArquivo);
+
+            writer.write(letra+"\n");
+            writer.write("Targets:\tSaida:\n");
+            for (int i = 0; i < target.length ; i++) {
+                writer.write(target[i]+"\t\t\t");
+                writer.write(neuronioPerceptrons.get(i).getDado()+"\n");
+            }
+            writer.write("=====================================\n");
             writer.close();
         }catch (Exception e){
             System.out.println(e.getMessage());
