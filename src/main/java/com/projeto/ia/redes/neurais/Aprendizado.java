@@ -12,19 +12,19 @@ import java.util.List;
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 0.5;	// Alfa, critério de aprendizado
+	static Double alfa = 0.5;		// Alfa, critério de aprendizado
 	static int epocas = 0;			// Contador de épocas
-	static int epocaFinal = 2000;
+	static int epocaFinal = 2000;	// Limitador de épocas
 
 	public static void main(String[] args) {
 		try {
-			Leitura leitura = new Leitura("dados/entrada/caracteres-limpo.csv");
-			List<String[]> dadosPlanilha = leitura.dadosCSV();
+			Leitura leitura = new Leitura("dados/entrada/caracteres-limpo.csv");  // Chama a classe Leitura para abrir o arquivo com os dados de entrada
+			List<String[]> dadosPlanilha = leitura.dadosCSV();									// Armazena os dados do arquivo em uma List de String
 
 			// Passo 0 - Estágio de Inicialização
-			Rede rede = new Rede();
-			rede.gerarCamadaSensorComPesos();
-			rede.gerarCamadaOcultaComPesos();
+			Rede rede = new Rede();																// Instancia um objeto Rede
+			rede.gerarCamadaSensorComPesos();													// e invoca os métodos responsáveis por criar as camadas da rede com
+			rede.gerarCamadaOcultaComPesos();													// seus pesos definidos em cada uma das camadas e imprime as informações num arquivo
 			rede.gerarCamadaSaida();
 			printaInformacoesInicias(rede.getCamadaSensor(), rede.getCamadaOculta(), rede.getCamadaSaida());
 
@@ -81,6 +81,12 @@ public class Aprendizado {
 		}
 	}
 
+	/*
+		Método responsável por imprimir as informações iniciais da Rede em um arquivo txt.
+		São impressos alfa e quantidade de neurônios e pesos em cada uma das camadas em um arquivo.
+		Um segundo arquivo é criado contendo os pesos iniciais de cada uma das camadas.
+	 */
+
 	public static void printaInformacoesInicias(CamadaSensor camadaSensor, CamadaOculta camadaOculta, CamadaSaida camadaSaida){
 		try{
 			Escrita escrita = new Escrita("dados/saida/valoresIniciais.txt");
@@ -99,6 +105,11 @@ public class Aprendizado {
 		}
 	}
 
+	/*
+		Método responsável por imprimir as informações finais em um arquivo txt.
+		São impressos os pesos finais de cada neurônio, bem como o peso dos Bias.
+	 */
+
 	public static void printaInformacoesFinais(CamadaSensor camadaSensor, CamadaOculta camadaOculta){
 		try{
 			Escrita escrita = new Escrita("dados/saida/");
@@ -112,6 +123,11 @@ public class Aprendizado {
 		}
 	}
 
+	/*
+		Método responsável por imprimir os erros cometidos pela rede
+		num arquivo txt.
+	 */
+
 	public static void printaErros(Double[] erros){
 		try {
 			Escrita escrita = new Escrita("dados/saida/erros.txt");
@@ -120,6 +136,13 @@ public class Aprendizado {
 			System.out.println(e.getMessage());
 		}
 	}
+
+	/*
+		Para cada linha do arquivo de entrada é gerado um vetor target, contendo
+		os valores que o representam. (Se a linha corresponder a um A o target será
+		[1, 0, 0, 0, 0, 0]. Este método é responsável por alterar o vetor target
+		a cada linha do arquivo de entrada.
+	 */
 
 	public static int [] alteraTarget(String letra){
 		int target []  = new int []{0,0,0,0,0,0,0};
