@@ -108,6 +108,7 @@ public class Aprendizado {
 		try{
 			Escrita escrita = new Escrita("dados/saida/valoresIniciais.txt");
 			escrita.printaTexto("Alfa: "+ alfa);
+            escrita.printaTexto("EpocaFinal: "+ epocaFinal);
 			escrita.printaValoresInicias("\nCamada Sensor", camadaSensor);
 			escrita.printaValoresInicias("\nCamada Oculta", camadaOculta);
 			escrita.printaValoresInicias("\nCamada Saida", camadaSaida);
