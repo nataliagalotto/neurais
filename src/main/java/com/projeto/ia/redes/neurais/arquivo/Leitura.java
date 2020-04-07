@@ -87,8 +87,10 @@ public class Leitura extends Arquivo{
         List<Double> pesos = new ArrayList<>();
 
         for (String[] peso : pesosPlanilha){
-            Double numero = Double.parseDouble(peso[0].replaceAll("\\uFEFF", ""));
-            pesos.add(numero);
+            if(!peso[0].equals("")){
+                Double numero = Double.parseDouble(peso[0].replaceAll("\\uFEFF", ""));
+                pesos.add(numero);
+            }
         }
         return pesos;
     }
