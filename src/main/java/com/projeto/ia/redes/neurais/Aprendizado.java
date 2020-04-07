@@ -29,15 +29,29 @@ public class Aprendizado {
 			printaInformacoesInicias(rede.getCamadaSensor(), rede.getCamadaOculta(), rede.getCamadaSaida());
 
 			// Passo 1 - Iterador de epocas
+            // o laço será executado enquanto
+            // epocas for menor do que o limite
+            // definido no início do programa.
+
 			while (epocas < epocaFinal){
-				System.out.println("Epoca: "+ epocas);
+				System.out.println("Epoca: "+ epocas);                                          // Imprime a epoca atual na tela
+
+                /*
+                    Para cada linha do arquivo de entrada
+                    invoca os métodos das classes correspondentes
+                    para realizar o Feedforward e o Backpropagation
+                 */
 
 				for (int i = 0; i < dadosPlanilha.size(); i++) {
 
+				    // Invoca o método responsável por realziar a leitura
+                    // dos dados do arquivo de entrada e gera o vetor target
 					List<Double> dadosEntrada = leitura.gerarDadosEntrada(dadosPlanilha.get(i));
 					String letra = leitura.getTarget();
 
 					// Passo 3, 4 e 5 - Estagio feedforward
+                    // gera a camada sensor com os dados de entrada
+                    //
 					rede.gerarDadosCamadaSensor(dadosEntrada);
 					rede.gerarDadosCamadaOculta();
 					rede.gerarDadosCamadaSaida();
@@ -52,11 +66,13 @@ public class Aprendizado {
 							camadaOculta.getNeuroniosProcessadores(),
 							camadaSaida.getNeuroniosSaida());
 
+					// Calcula e armazena as correções de pesos e bias
 					Double [][] deltaoWJK = calcula.funcaoDeltaoWJK(target, alfa);
 					Double [][] deltaoVIJ = calcula.funcaoDeltaoVIJ(alfa);
 					List<Double> deltao_biasWK = calcula.funcaoBiasWK(alfa);
 					List<Double> deltao_biasVJ = calcula.funcaoBiasVJ(alfa);
 
+					// Imprime os erros num arquivo
 					printaErros(calcula.getErro());
 
 					// Passo 8 - Estagio de Atualização de Pesos
@@ -66,6 +82,7 @@ public class Aprendizado {
 				epocas++;
 			}
 
+			//
 			printaInformacoesFinais(rede.getCamadaSensor(), rede.getCamadaOculta());
 
 		}catch (Exception e ){
