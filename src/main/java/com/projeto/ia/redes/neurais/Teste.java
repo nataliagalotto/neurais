@@ -19,7 +19,7 @@ public class Teste {
         //pesos da rede após o treinamento e do arquivo
         //contendo os dados de entrada para o teste
         try {
-            Leitura leitura = new Leitura("dados/entrada/caracteres-ruido.csv"); //recebe os dados de entrada
+            Leitura leitura = new Leitura("dados/entrada/problemAND.csv"); //recebe os dados de entrada
 
             //Armazena os dados lidos em estruturas
             //List de Strings
@@ -111,9 +111,10 @@ public class Teste {
             case "K":
                 target[6]=1;
                 return target;
+            default:
+                int numero =  Integer.parseInt(letra);
+                return new int []{numero};
         }
-
-        return null;
     }
 
     /*

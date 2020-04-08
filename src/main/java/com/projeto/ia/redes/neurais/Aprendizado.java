@@ -12,13 +12,13 @@ import java.util.List;
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 0.5;		// Alfa, critério de aprendizado
+	static Double alfa = 1.0;		// Alfa, critério de aprendizado
 	static int epocas = 0;			// Contador de épocas
-	static int epocaFinal = 2000;	// Limitador de épocas
+	static int epocaFinal = 100;	// Limitador de épocas
 
 	public static void main(String[] args) {
 		try {
-			Leitura leitura = new Leitura("dados/entrada/caracteres-limpo.csv");  // Chama a classe Leitura para abrir o arquivo com os dados de entrada
+			Leitura leitura = new Leitura("dados/entrada/problemAND.csv");  // Chama a classe Leitura para abrir o arquivo com os dados de entrada
 			List<String[]> dadosPlanilha = leitura.dadosCSV();									// Armazena os dados do arquivo em uma List de String
 
 			// Passo 0 - Estágio de Inicialização
@@ -67,17 +67,23 @@ public class Aprendizado {
 							camadaSaida.getNeuroniosSaida());
 
 					// Calcula e armazena as correções de pesos e bias
-					Double [][] deltaoWJK = calcula.funcaoDeltaoWJK(target, alfa);
-					Double [][] deltaoVIJ = calcula.funcaoDeltaoVIJ(alfa);
-					List<Double> deltao_biasWK = calcula.funcaoBiasWK(alfa);
-					List<Double> deltao_biasVJ = calcula.funcaoBiasVJ(alfa);
+					// Passo 6 - Camada Saida
+					List<Double> deltinha_K = calcula.funcaoDeltinhaK(target);
+					Double[][] deltaoWJK = calcula.funcaoDeltaoWJK(deltinha_K, alfa);
+					List<Double> deltaoBiasWK = calcula.funcaoBiasWK(deltinha_K, alfa);
+
+					//Passo 7 - Camada Oculta e Sensor
+					Double[] deltinha_inJ = calcula.funcaoDeltinhaInJ(deltinha_K);
+					List<Double> deltinha_J = calcula.funcaoDeltinhaJ(deltinha_inJ);
+					Double [][] deltaoVIJ = calcula.funcaoDeltaoVIJ(deltinha_J, alfa);
+					List<Double> deltao_biasVJ = calcula.funcaoBiasVJ(deltinha_J,alfa);
 
 					// Imprime os erros num arquivo
 					printaErros(calcula.getErro());
 
 					// Passo 8 - Estagio de Atualização de Pesos
 					rede.atualizaPesosCamadaSensor(deltaoVIJ,deltao_biasVJ);
-					rede.atualizaPesosBiasCamadaOculta(deltaoWJK, deltao_biasWK);
+					rede.atualizaPesosBiasCamadaOculta(deltaoWJK, deltaoBiasWK);
 				}
 				epocas++;
 			}
@@ -187,8 +193,9 @@ public class Aprendizado {
 			case "K":
 				target[6]=1;
 				return target;
+			default:
+				int numero =  Integer.parseInt(letra);
+				return new int []{numero};
 		}
-
-		return null;
 	}
 }

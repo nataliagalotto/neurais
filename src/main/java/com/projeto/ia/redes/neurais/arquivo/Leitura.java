@@ -75,6 +75,23 @@ public class Leitura extends Arquivo{
     }
 
     /*
+       Método que recebe a List acima e, para cada uma das
+       linhas converte o valor que está em String para Double.
+       Após isso armazena numa estrutura List de Doubles.
+    */
+    public List<Double> gerarDadosEntrada2(String [] linhas){
+        //System.out.println("LINHA 1 \n");
+        for (int i = 0; i < linhas.length - 1 ; i++) {
+            //dados.add(bias);
+            Double numero = Double.parseDouble(linhas[i].replaceAll("\\uFEFF", ""));
+            dados.add(numero);
+            //System.out.println("linha["+i+"]: "+ dados.get(i));
+        }
+        setTarget(linhas[linhas.length - 1]);
+        return dados;
+    }
+
+    /*
         Método utilizado pela Classe de Teste. Após treinada a rede
         os dados obtidos (pesos finais) são armazenados num arquivo
         txt. A Classe Teste recebe esses dados para gerar os pesos

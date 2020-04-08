@@ -14,8 +14,8 @@ public class CamadaSensor extends CamadaBase{
 
 
     public CamadaSensor() {
-        this.qtdPesos = 63;
-        this.qtdNeuronios = 35;
+        this.qtdPesos = 2;
+        this.qtdNeuronios = 2;
     }
 
     public List<NeuronioPerceptron> gerarListaNeuroniosComPesos(){

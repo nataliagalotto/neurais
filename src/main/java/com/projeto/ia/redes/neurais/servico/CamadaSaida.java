@@ -16,7 +16,7 @@ public class CamadaSaida extends CamadaBase {
     //quantidade de neurônios
     //definida
     public CamadaSaida() {
-        this.qtdNeuronios = 7;
+        this.qtdNeuronios = 1;
     }
 
     //Método responsável por criar uma List
