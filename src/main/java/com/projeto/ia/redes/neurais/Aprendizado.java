@@ -12,9 +12,9 @@ import java.util.List;
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 1.0;		// Alfa, critério de aprendizado
+	static Double alfa = 0.99;		// Alfa, critério de aprendizado
 	static int epocas = 0;			// Contador de épocas
-	static int epocaFinal = 1;	// Limitador de épocas
+	static int epocaFinal = 500;	// Limitador de épocas
 
 	public static void main(String[] args) {
 		try {
