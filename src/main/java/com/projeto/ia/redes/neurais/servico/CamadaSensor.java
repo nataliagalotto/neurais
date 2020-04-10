@@ -14,7 +14,7 @@ public class CamadaSensor extends CamadaBase{
 
 
     public CamadaSensor() {
-        this.qtdPesos = 2;
+        this.qtdPesos = 1;
         this.qtdNeuronios = 2;
     }
 
@@ -49,10 +49,8 @@ public class CamadaSensor extends CamadaBase{
     }
 
     public List<NeuronioPerceptron> atualizaDadosNeuronios(){
-        for (NeuronioPerceptron neuroniosSensor : neuroniosSensores){
-            for(Double dado : dadosEntrada){
-                neuroniosSensor.setDado(dado);
-            }
+        for (int i = 0; i < qtdNeuronios; i++) {
+            neuroniosSensores.get(i).setDado(dadosEntrada.get(i));
         }
         return neuroniosSensores;
     }

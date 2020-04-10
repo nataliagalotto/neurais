@@ -12,8 +12,6 @@ import java.util.List;
 
 public class Leitura extends Arquivo{
 
-
-    List<Double> dados = new ArrayList<>();     //Estrutura responsável por receber os dados de entrada
     String target;                              //Estrutura responsável por armazenar os rótulos dos dados
 
 
@@ -63,23 +61,7 @@ public class Leitura extends Arquivo{
         Após isso armazena numa estrutura List de Doubles.
      */
     public List<Double> gerarDadosEntrada(String [] linhas){
-        //System.out.println("LINHA 1 \n");
-        for (int i = 0; i < linhas.length - 1 ; i++) {
-            //dados.add(bias);
-            Double numero = Double.parseDouble(linhas[i].replaceAll("\\uFEFF", ""));
-            dados.add(numero);
-            //System.out.println("linha["+i+"]: "+ dados.get(i));
-        }
-        setTarget(linhas[linhas.length - 1]);
-        return dados;
-    }
-
-    /*
-       Método que recebe a List acima e, para cada uma das
-       linhas converte o valor que está em String para Double.
-       Após isso armazena numa estrutura List de Doubles.
-    */
-    public List<Double> gerarDadosEntrada2(String [] linhas){
+        List<Double> dados = new ArrayList<>();     //Estrutura responsável por receber os dados de entrada
         //System.out.println("LINHA 1 \n");
         for (int i = 0; i < linhas.length - 1 ; i++) {
             //dados.add(bias);

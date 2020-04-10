@@ -10,7 +10,7 @@ public class CamadaOculta extends CamadaBase {
 
     public CamadaOculta() {
         this.qtdPesos = 1;
-        this.qtdNeuronios = 2;
+        this.qtdNeuronios = 1;
     }
 
     public List<NeuronioPerceptron> gerarListaNeuroniosComPesos(){

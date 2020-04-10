@@ -33,7 +33,8 @@ public class Bias {
     public List<Double> gerarPesos(int qtd){
         Utils utils = new Utils();
         for (int i = 0; i < qtd ; i++) {
-            pesos.add(utils.getRandomDouble());
+            pesos.add(0.0);
+            //pesos.add(utils.getRandomDouble());
         }
         return pesos;
     }
