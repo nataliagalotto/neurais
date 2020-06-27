@@ -36,6 +36,22 @@ public class Escrita extends Arquivo{
         }
     }
 
+
+    /*
+     Método que imprime o alfa definido inicialmente
+     na rede
+  */
+    public void printaDouble(Double numero){
+        try{
+            FileWriter writer = geraArquivo(caminhoArquivo);
+            writer.write(DoubleRounder.round(numero, 18)+"\n");
+            writer.close();
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     /*
         Imprime os valores iniciais no arquivo: quantidade
         de neurônios em cada uma das camadas e quantidade

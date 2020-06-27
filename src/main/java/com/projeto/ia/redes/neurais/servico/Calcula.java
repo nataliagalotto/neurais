@@ -1,5 +1,6 @@
 package com.projeto.ia.redes.neurais.servico;
 import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
+import org.apache.spark.mllib.tree.loss.LogLoss;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,13 @@ public class Calcula extends CalculaBase {
     public Calcula(List<NeuronioPerceptron> neuroniosSensores,
                    List<NeuronioPerceptron> neuroniosProcessadores,
                    List<NeuronioPerceptron> neuroniosSaida,
-                   Double[] erro) {
+                   Double[] erro,
+                   Double[] erroLogLess) {
         this.neuroniosSensores = neuroniosSensores;
         this.neuroniosProcessadores = neuroniosProcessadores;
         this.neuroniosSaida = neuroniosSaida;
         this.erro = erro;
+        this.erroLogLess = erroLogLess;
     }
 
     //   δk =(tk − yk ) * f′(y_in)
@@ -32,8 +35,8 @@ public class Calcula extends CalculaBase {
 
             //Calcula o erro com base no target e na
             //saída da camada final y
-            erro[k] = (targets[k] - y);
-
+            erro[k] = Math.pow((targets[k] - y),2);
+            erroLogLess[k] = calculaErroLogLoss(y,targets[k]);
 
             //Computa a correção dos pesos da camada de saida
             //multiplicando o erro pela função derivada
@@ -43,6 +46,10 @@ public class Calcula extends CalculaBase {
         }
 
         return deltinhas_K;
+    }
+
+    public Double calculaErroLogLoss(Double y , int target){
+        return LogLoss.gradient(y, target);
     }
 
     public double calculaMediaErro(Double sumErro, int qtdDados){
@@ -188,6 +195,14 @@ public class Calcula extends CalculaBase {
      */
     public Double[] getErro() {
         return erro;
+    }
+
+    /*
+        Getter dos erros
+        cometidos pela rede
+     */
+    public Double[] getErroLogLess() {
+        return erroLogLess;
     }
 
 }

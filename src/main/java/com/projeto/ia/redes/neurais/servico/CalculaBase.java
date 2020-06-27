@@ -11,4 +11,5 @@ public class CalculaBase {
     List<NeuronioPerceptron> neuroniosProcessadores;    //Estrutura que recebe os neuronios processadores para realizar os cálculos
     List<NeuronioPerceptron> neuroniosSaida;            //Estrutura que recebe os neuronios saída para realizar os cálculos
     Double [] erro;                  //Estrutura que recebe os erros cometidos no treinamento
+    Double [] erroLogLess;
 }

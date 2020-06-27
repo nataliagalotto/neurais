@@ -13,10 +13,11 @@ import java.util.List;
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 0.1;		// Alfa, critério de aprendizado
+	static Double alfa = 0.3;		// Alfa, critério de aprendizado
 	static int epocas = 0;			// Contador de épocas
-	static int epocaFinal = 300;	// Limitador de épocas
+	static int epocaFinal = 5000;	// Limitador de épocas
 	static Double sumErro;
+	static Double sumErroLogLess;
 
 	public static void main(String[] args) {
 		try {
@@ -28,11 +29,11 @@ public class Aprendizado {
 			int qtdDados = dadosPlanilha.size();
 
 			// Passo 0 - Estágio de Inicialização
-			Rede rede = new Rede(25,20,1);																// Instancia um objeto Rede
+			Rede rede = new Rede(25,40,1);																// Instancia um objeto Rede
 			rede.gerarCamadaSensorComPesos();													// e invoca os métodos responsáveis por criar as camadas da rede com
 			rede.gerarCamadaOcultaComPesos();													// seus pesos definidos em cada uma das camadas e imprime as informações num arquivo
 			rede.gerarCamadaSaida();
-			printaInformacoesInicias(rede.getCamadaSensor(), rede.getCamadaOculta(), rede.getCamadaSaida());
+			//printaInformacoesInicias(rede.getCamadaSensor(), rede.getCamadaOculta(), rede.getCamadaSaida());
 
 			// Passo 1 - Iterador de epocas
             // o laço será executado enquanto
@@ -42,6 +43,7 @@ public class Aprendizado {
 			while (epocas < epocaFinal){
 				System.out.println("Epoca: "+ epocas);                                          // Imprime a epoca atual na tela
 				sumErro = 0.0;
+				sumErroLogLess = 0.0;
 
                 /*
                     Para cada linha do arquivo de entrada
@@ -71,6 +73,7 @@ public class Aprendizado {
 					Calcula calcula = new Calcula(camadaSensor.getNeuroniosSensores(),
 							camadaOculta.getNeuroniosProcessadores(),
 							camadaSaida.getNeuroniosSaida(),
+							new Double[camadaSaida.getQtdNeuronios()],
 							new Double[camadaSaida.getQtdNeuronios()]);
 
 					// Calcula e armazena as correções de pesos e bias
@@ -90,15 +93,17 @@ public class Aprendizado {
 					rede.atualizaPesosBiasCamadaOculta(deltaoWJK, deltaoBiasWK);
 
 					somaErro(calcula.getErro());
+					somaErroLogLess(calcula.getErroLogLess());
 
 					if( i == qtdDados - 1 ){
-						printaErros(calcula.calculaMediaErro(sumErro, qtdDados));
+						printaErros(calcula.calculaMediaErro(sumErro, qtdDados), "taxaErro");
+						//printaErros(calcula.calculaMediaErro(sumErroLogLess, qtdDados),"taxaErroLogLess");
 					}
 				}
 				epocas++;
 			}
 
-			printaInformacoesFinais(rede.getCamadaSensor(), rede.getCamadaOculta());
+			//printaInformacoesFinais(rede.getCamadaSensor(), rede.getCamadaOculta());
 
 		}catch (Exception e ){
 			for (StackTraceElement tk: e.getStackTrace()) {
@@ -119,72 +124,64 @@ public class Aprendizado {
 		}
 	}
 
+	public static void somaErroLogLess(Double[] erro){
+		for (int k = 0; k < erro.length; k++) {
+			sumErroLogLess = sumErroLogLess + erro[k];
+		}
+	}
+
 	/*
 		Método responsável por imprimir as informações iniciais da Rede em um arquivo txt.
 		São impressos alfa e quantidade de neurônios e pesos em cada uma das camadas em um arquivo.
 		Um segundo arquivo é criado contendo os pesos iniciais de cada uma das camadas.
 	 */
 
-	public static void printaInformacoesInicias(CamadaSensor camadaSensor, CamadaOculta camadaOculta, CamadaSaida camadaSaida){
-		try{
-			Escrita escrita = new Escrita("dados/saida/valoresIniciais.txt");
-			escrita.printaTexto("Alfa: "+ alfa);
-            escrita.printaTexto("EpocaFinal: "+ epocaFinal);
-			escrita.printaValoresInicias("\nCamada Sensor", camadaSensor);
-			escrita.printaValoresInicias("\nCamada Oculta", camadaOculta);
-			escrita.printaValoresInicias("\nCamada Saida", camadaSaida);
-
-			Escrita escrita2 = new Escrita("dados/saida/pesosIniciais.txt");
-			escrita2.printaPesos(camadaSensor.getNeuroniosSensores(), "Pesos Camada Sensor","");
-			escrita2.printaPesos(camadaOculta.getNeuroniosProcessadores(), "Pesos Camada Escondida","");
-			escrita2.printaBiasPesos(camadaSensor.getBias(), "Pesos Bias Camada Sensor", "");
-			escrita2.printaBiasPesos(camadaOculta.getBias(), "Pesos Bias Camada Oculta", "");
-		}catch (Exception e){
-			System.out.println(e.getMessage());
-		}
-	}
+//	public static void printaInformacoesInicias(CamadaSensor camadaSensor, CamadaOculta camadaOculta, CamadaSaida camadaSaida){
+//		try{
+//			Escrita escrita = new Escrita("dados/saida/valoresIniciais.txt");
+//			escrita.printaTexto("Alfa: "+ alfa);
+//            escrita.printaTexto("EpocaFinal: "+ epocaFinal);
+//			escrita.printaValoresInicias("\nCamada Sensor", camadaSensor);
+//			escrita.printaValoresInicias("\nCamada Oculta", camadaOculta);
+//			escrita.printaValoresInicias("\nCamada Saida", camadaSaida);
+//
+//			Escrita escrita2 = new Escrita("dados/saida/pesosIniciais.txt");
+//			escrita2.printaPesos(camadaSensor.getNeuroniosSensores(), "Pesos Camada Sensor","");
+//			escrita2.printaPesos(camadaOculta.getNeuroniosProcessadores(), "Pesos Camada Escondida","");
+//			escrita2.printaBiasPesos(camadaSensor.getBias(), "Pesos Bias Camada Sensor", "");
+//			escrita2.printaBiasPesos(camadaOculta.getBias(), "Pesos Bias Camada Oculta", "");
+//		}catch (Exception e){
+//			System.out.println(e.getMessage());
+//		}
+//	}
 
 	/*
 		Método responsável por imprimir as informações finais em um arquivo txt.
 		São impressos os pesos finais de cada neurônio, bem como o peso dos Bias.
 	 */
 
-	public static void printaInformacoesFinais(CamadaSensor camadaSensor, CamadaOculta camadaOculta){
-		try{
-			Escrita escrita = new Escrita("dados/saida/");
-			escrita.printaPesos(camadaSensor.getNeuroniosSensores(), "","pesosFinaisSensor.txt");
-			escrita.printaPesos(camadaOculta.getNeuroniosProcessadores(), "","pesosFinaisOculta.txt");
-			escrita.printaBiasPesos(camadaSensor.getBias(), "", "pesoBiasFinaisSensor.txt");
-			escrita.printaBiasPesos(camadaOculta.getBias(), "", "pesoBiasFinaisOculta.txt");
-
-		}catch (Exception e){
-			System.out.println(e.getMessage());
-		}
-	}
-
-	/*
-		Método responsável por imprimir os erros cometidos pela rede
-		num arquivo txt.
-	 */
-
-	public static void printaErros(Double[] erros){
+//	public static void printaInformacoesFinais(CamadaSensor camadaSensor, CamadaOculta camadaOculta){
+//		try{
+//			Escrita escrita = new Escrita("dados/saida/");
+//			escrita.printaPesos(camadaSensor.getNeuroniosSensores(), "","pesosFinaisSensor.txt");
+//			escrita.printaPesos(camadaOculta.getNeuroniosProcessadores(), "","pesosFinaisOculta.txt");
+//			escrita.printaBiasPesos(camadaSensor.getBias(), "", "pesoBiasFinaisSensor.txt");
+//			escrita.printaBiasPesos(camadaOculta.getBias(), "", "pesoBiasFinaisOculta.txt");
+//
+//		}catch (Exception e){
+//			System.out.println(e.getMessage());
+//		}
+//	}
+//
+//		/*
+//		Método responsável por imprimir os erros cometidos pela rede
+//		num arquivo txt.
+//	 */
+//
+	public static void printaErros(Double erros, String arquivo){
 		try {
-			Escrita escrita = new Escrita("dados/saida/erros.txt");
-			escrita.printaErros(erros);
-		}catch (Exception e){
-			System.out.println(e.getMessage());
-		}
-	}
-
-		/*
-		Método responsável por imprimir os erros cometidos pela rede
-		num arquivo txt.
-	 */
-
-	public static void printaErros(Double erros){
-		try {
-			Escrita escrita = new Escrita("dados/saida/erros.txt");
-			escrita.printaTexto(erros.toString());
+			Escrita escrita = new Escrita("dados/saida/"+arquivo+".txt");
+			escrita.printaDouble(erros);
 		}catch (Exception e){
 			System.out.println(e.getMessage());
 		}
