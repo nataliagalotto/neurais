@@ -1,6 +1,7 @@
 package com.projeto.ia.redes.neurais;
 import com.projeto.ia.redes.neurais.arquivo.Escrita;
 import com.projeto.ia.redes.neurais.arquivo.Leitura;
+import com.projeto.ia.redes.neurais.enums.TiposTarget;
 import com.projeto.ia.redes.neurais.servico.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.List;
@@ -12,17 +13,22 @@ import java.util.List;
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 0.99;		// Alfa, critério de aprendizado
+	static Double alfa = 0.1;		// Alfa, critério de aprendizado
 	static int epocas = 0;			// Contador de épocas
-	static int epocaFinal = 500;	// Limitador de épocas
+	static int epocaFinal = 300;	// Limitador de épocas
+	static Double sumErro;
 
 	public static void main(String[] args) {
 		try {
-			Leitura leitura = new Leitura("dados/entrada/problemAND.csv");  // Chama a classe Leitura para abrir o arquivo com os dados de entrada
+			// Informações que devem ser alteradas de acordo com o problema
+			Leitura leitura = new Leitura("dados/entrada/ep3/x_train_scaled.csv");  // Chama a classe Leitura para abrir o arquivo com os dados de entrada
+			LeitorTarget lt = new LeitorTarget(TiposTarget.CSV);
+			lt.csvTarget();
 			List<String[]> dadosPlanilha = leitura.dadosCSV();									// Armazena os dados do arquivo em uma List de String
+			int qtdDados = dadosPlanilha.size();
 
 			// Passo 0 - Estágio de Inicialização
-			Rede rede = new Rede();																// Instancia um objeto Rede
+			Rede rede = new Rede(25,20,1);																// Instancia um objeto Rede
 			rede.gerarCamadaSensorComPesos();													// e invoca os métodos responsáveis por criar as camadas da rede com
 			rede.gerarCamadaOcultaComPesos();													// seus pesos definidos em cada uma das camadas e imprime as informações num arquivo
 			rede.gerarCamadaSaida();
@@ -35,6 +41,7 @@ public class Aprendizado {
 
 			while (epocas < epocaFinal){
 				System.out.println("Epoca: "+ epocas);                                          // Imprime a epoca atual na tela
+				sumErro = 0.0;
 
                 /*
                     Para cada linha do arquivo de entrada
@@ -42,12 +49,11 @@ public class Aprendizado {
                     para realizar o Feedforward e o Backpropagation
                  */
 
-				for (int i = 0; i < dadosPlanilha.size(); i++) {
+				for (int i = 0; i < qtdDados; i++) {
 
 				    // Invoca o método responsável por realziar a leitura
                     // dos dados do arquivo de entrada e gera o vetor target
-					List<Double> dadosEntrada = leitura.gerarDadosEntrada(dadosPlanilha.get(i));
-					String letra = leitura.getTarget();
+					List<Double> dadosEntrada = leitura.gerarDadosEntrada(dadosPlanilha.get(i), lt);
 
 					// Passo 3, 4 e 5 - Estagio feedforward
                     // gera a camada sensor com os dados de entrada
@@ -61,10 +67,11 @@ public class Aprendizado {
 					CamadaSaida camadaSaida = rede.getCamadaSaida();
 
 					// Passo 6 e 7 - Estagio Backpropagation
-					int target[] = alteraTarget(letra);
+					int target[] = lt.pegaTarget(i);
 					Calcula calcula = new Calcula(camadaSensor.getNeuroniosSensores(),
 							camadaOculta.getNeuroniosProcessadores(),
-							camadaSaida.getNeuroniosSaida());
+							camadaSaida.getNeuroniosSaida(),
+							new Double[camadaSaida.getQtdNeuronios()]);
 
 					// Calcula e armazena as correções de pesos e bias
 					// Passo 6 - Camada Saida
@@ -78,17 +85,19 @@ public class Aprendizado {
 					Double [][] deltaoVIJ = calcula.funcaoDeltaoVIJ(deltinha_J, alfa);
 					List<Double> deltao_biasVJ = calcula.funcaoBiasVJ(deltinha_J,alfa);
 
-					// Imprime os erros num arquivo
-					printaErros(calcula.getErro());
-
 					// Passo 8 - Estagio de Atualização de Pesos
 					rede.atualizaPesosCamadaSensor(deltaoVIJ,deltao_biasVJ);
 					rede.atualizaPesosBiasCamadaOculta(deltaoWJK, deltaoBiasWK);
+
+					somaErro(calcula.getErro());
+
+					if( i == qtdDados - 1 ){
+						printaErros(calcula.calculaMediaErro(sumErro, qtdDados));
+					}
 				}
 				epocas++;
 			}
 
-			//
 			printaInformacoesFinais(rede.getCamadaSensor(), rede.getCamadaOculta());
 
 		}catch (Exception e ){
@@ -101,6 +110,12 @@ public class Aprendizado {
 			}
 			System.err.println(e.getMessage());
 			System.err.println(e.getCause().getMessage());
+		}
+	}
+
+	public static void somaErro(Double[] erro){
+		for (int k = 0; k < erro.length; k++) {
+			sumErro = sumErro + erro[k];
 		}
 	}
 
@@ -161,41 +176,17 @@ public class Aprendizado {
 		}
 	}
 
-	/*
-		Para cada linha do arquivo de entrada é gerado um vetor target, contendo
-		os valores que o representam. (Se a linha corresponder a um A o target será
-		[1, 0, 0, 0, 0, 0]. Este método é responsável por alterar o vetor target
-		a cada linha do arquivo de entrada.
+		/*
+		Método responsável por imprimir os erros cometidos pela rede
+		num arquivo txt.
 	 */
 
-	public static int [] alteraTarget(String letra){
-		int target []  = new int []{0,0,0,0,0,0,0};
-
-		switch (letra){
-			case "A":
-				target[0]=1;
-				return target;
-			case "B":
-				target[1]=1;
-				return target;
-			case "C":
-				target[2]=1;
-				return target;
-			case "D":
-				target[3]=1;
-				return target;
-			case "E":
-				target[4]=1;
-				return target;
-			case "J":
-				target[5]=1;
-				return target;
-			case "K":
-				target[6]=1;
-				return target;
-			default:
-				int numero =  Integer.parseInt(letra);
-				return new int []{numero};
+	public static void printaErros(Double erros){
+		try {
+			Escrita escrita = new Escrita("dados/saida/erros.txt");
+			escrita.printaTexto(erros.toString());
+		}catch (Exception e){
+			System.out.println(e.getMessage());
 		}
 	}
 }

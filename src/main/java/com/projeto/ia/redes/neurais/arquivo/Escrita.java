@@ -121,7 +121,7 @@ public class Escrita extends Arquivo{
             writer.write("Targets:\tSaida:\n");
             for (int i = 0; i < target.length ; i++) {
                 writer.write(target[i]+"\t\t\t");
-                writer.write(DoubleRounder.round(neuronioPerceptrons.get(i).getDado(), 4)+"\n");
+                writer.write(DoubleRounder.round(neuronioPerceptrons.get(i).getDado(), 3)+"\n");
             }
             writer.write("=====================================\n");
             writer.close();

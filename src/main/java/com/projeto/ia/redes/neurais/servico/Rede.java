@@ -14,10 +14,10 @@ public class Rede {
     CamadaOculta camadaOculta;
     CamadaSaida camadaSaida;
 
-    public Rede() {
-        this.camadaSensor = new CamadaSensor();
-        this.camadaOculta = new CamadaOculta();
-        this.camadaSaida = new CamadaSaida();
+    public Rede(int neuroniosSensor,int neuroniosOculta,int neuroniosSaida) {
+        this.camadaSensor = new CamadaSensor(neuroniosSensor,neuroniosOculta);
+        this.camadaOculta = new CamadaOculta(neuroniosOculta,neuroniosSaida);
+        this.camadaSaida = new CamadaSaida(neuroniosSaida);
     }
 
     //Responsavel por gerar os neuronios Camada Sensor com pesos

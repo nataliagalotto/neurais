@@ -12,10 +12,14 @@ import java.util.List;
 public class Calcula extends CalculaBase {
 
     //Construtor da classe
-    public Calcula(List<NeuronioPerceptron> neuroniosSensores, List<NeuronioPerceptron> neuroniosProcessadores, List<NeuronioPerceptron> neuroniosSaida) {
+    public Calcula(List<NeuronioPerceptron> neuroniosSensores,
+                   List<NeuronioPerceptron> neuroniosProcessadores,
+                   List<NeuronioPerceptron> neuroniosSaida,
+                   Double[] erro) {
         this.neuroniosSensores = neuroniosSensores;
         this.neuroniosProcessadores = neuroniosProcessadores;
         this.neuroniosSaida = neuroniosSaida;
+        this.erro = erro;
     }
 
     //   δk =(tk − yk ) * f′(y_in)
@@ -30,6 +34,7 @@ public class Calcula extends CalculaBase {
             //saída da camada final y
             erro[k] = (targets[k] - y);
 
+
             //Computa a correção dos pesos da camada de saida
             //multiplicando o erro pela função derivada
             //aplicada em y_in
@@ -38,6 +43,10 @@ public class Calcula extends CalculaBase {
         }
 
         return deltinhas_K;
+    }
+
+    public double calculaMediaErro(Double sumErro, int qtdDados){
+        return  sumErro/qtdDados;
     }
 
     /*

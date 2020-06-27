@@ -1,5 +1,8 @@
 package com.projeto.ia.redes.neurais.arquivo;
 import com.opencsv.CSVReader;
+import com.projeto.ia.redes.neurais.enums.TiposTarget;
+import com.projeto.ia.redes.neurais.servico.LeitorTarget;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +14,6 @@ import java.util.List;
  */
 
 public class Leitura extends Arquivo{
-
-    String target;                              //Estrutura responsável por armazenar os rótulos dos dados
-
 
     //Construtor da classe que recebe uma String
     //contendo o path do arquivo
@@ -55,12 +55,23 @@ public class Leitura extends Arquivo{
         }
     }
 
+
+    public List<Double> gerarDadosEntrada(String [] linhas, LeitorTarget leitorTarget){
+        switch (leitorTarget.getTiposTarget()){
+            case LETRA:
+                return gerarDadosEntradaLetra(linhas, leitorTarget);
+            case CSV:
+                return gerarDadosEntradaCSV(linhas);
+        }
+        return null;
+    }
+
     /*
         Método que recebe a List acima e, para cada uma das
         linhas converte o valor que está em String para Double.
         Após isso armazena numa estrutura List de Doubles.
      */
-    public List<Double> gerarDadosEntrada(String [] linhas){
+    public List<Double> gerarDadosEntradaLetra(String [] linhas, LeitorTarget leitorTarget){
         List<Double> dados = new ArrayList<>();     //Estrutura responsável por receber os dados de entrada
         //System.out.println("LINHA 1 \n");
         for (int i = 0; i < linhas.length - 1 ; i++) {
@@ -69,7 +80,24 @@ public class Leitura extends Arquivo{
             dados.add(numero);
             //System.out.println("linha["+i+"]: "+ dados.get(i));
         }
-        setTarget(linhas[linhas.length - 1]);
+        leitorTarget.setTarget(linhas[linhas.length - 1]);
+        return dados;
+    }
+
+    /*
+       Método que recebe a List acima e, para cada uma das
+       linhas converte o valor que está em String para Double.
+       Após isso armazena numa estrutura List de Doubles.
+    */
+    public List<Double> gerarDadosEntradaCSV(String [] linhas){
+        List<Double> dados = new ArrayList<>();     //Estrutura responsável por receber os dados de entrada
+        //System.out.println("LINHA 1 \n");
+        for (int i = 0; i < linhas.length ; i++) {
+            //dados.add(bias);
+            Double numero = Double.parseDouble(linhas[i].replaceAll("\\uFEFF", ""));
+            dados.add(numero);
+            //System.out.println("linha["+i+"]: "+ dados.get(i));
+        }
         return dados;
     }
 
@@ -94,17 +122,9 @@ public class Leitura extends Arquivo{
         return pesos;
     }
 
-    //Getters e Setters da classe
-    public void setTarget(String letra){
-        this.target = letra;
-        //System.out.println("Letra: "+letra);
-    }
 
-    public String getTarget() {
-        return target;
-    }
 
-    public void deletarDiretorio(){
+    public void deletarDiretorioSaida(){
         File folder = new File("dados/saida/");
         if (folder.isDirectory()) {
             File[] sun = folder.listFiles();

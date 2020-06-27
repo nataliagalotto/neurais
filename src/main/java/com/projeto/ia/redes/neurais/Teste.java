@@ -2,6 +2,8 @@ package com.projeto.ia.redes.neurais;
 import com.projeto.ia.redes.neurais.arquivo.Escrita;
 import com.projeto.ia.redes.neurais.arquivo.Leitura;
 import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
+import com.projeto.ia.redes.neurais.enums.TiposTarget;
+import com.projeto.ia.redes.neurais.servico.LeitorTarget;
 import com.projeto.ia.redes.neurais.servico.Rede;
 import org.decimal4j.util.DoubleRounder;
 import java.util.List;
@@ -19,7 +21,8 @@ public class Teste {
         //pesos da rede após o treinamento e do arquivo
         //contendo os dados de entrada para o teste
         try {
-            Leitura leitura = new Leitura("dados/entrada/problemAND.csv"); //recebe os dados de entrada
+            Leitura leitura = new Leitura("dados/entrada/caracteres-ruido.csv"); //recebe os dados de entrada
+            LeitorTarget lt = new LeitorTarget(TiposTarget.CSV);
 
             //Armazena os dados lidos em estruturas
             //List de Strings
@@ -39,7 +42,7 @@ public class Teste {
             // as camadas neurônios, os pesos são setados
             //nos neuronios da camada sensor e
             //da camada oculta - sem perder seu significado
-            Rede rede = new Rede();
+            Rede rede = new Rede(25,20,1);
             rede.gerarCamadaSensorComPesosTeste(pesosEntradaSensor,pesosBiasEntradaSensor);
             rede.gerarCamadaOcultaComPesosTeste(pesosEntradaOculta,pesosBiasEntradaOculta);
             rede.gerarCamadaSaida();
@@ -50,12 +53,11 @@ public class Teste {
 
                     //Le cada linha do arquivo de entrada
                     //para utilizá-los na rede
-                    List<Double> dadosEntrada = leitura.gerarDadosEntrada(dadosPlanilha.get(i));
+                    List<Double> dadosEntrada = leitura.gerarDadosEntrada(dadosPlanilha.get(i),lt);
 
                     //Constrói as variáveis correspondentes
                     //ao target de cada linha de dados de entrada
-                    String letra = leitura.getTarget();
-                    int target[] = alteraTarget(letra);
+                    int target[] = lt.pegaTarget(i);
 
                     //Computa os valores da rede
                     //para cada camada realiza as somas ponderadas
@@ -68,7 +70,7 @@ public class Teste {
                     //Armazena os resultados finais da rede(camada saida)
                     //e invoca o método para imprimir os resultados
                     List<NeuronioPerceptron> neuronioPerceptrons = rede.getCamadaSaida().getNeuroniosSaida();
-                    printFinal(neuronioPerceptrons, target, letra);
+                    printFinal(neuronioPerceptrons, target, lt.getTarget()); //fixme
                 }
             } catch (Exception e ){
             for (StackTraceElement tk: e.getStackTrace()) {
@@ -80,40 +82,6 @@ public class Teste {
             }
             System.err.println(e.getMessage());
             System.err.println(e.getCause().getMessage());
-        }
-    }
-
-    //Cria um vetor com os dados que representam o
-    //target de cada entrada
-    //se o target for A o vetor será A[1 0 0 0 0 0 0]
-    public static int [] alteraTarget(String letra){
-        int target []  = new int []{0,0,0,0,0,0,0};
-
-        switch (letra){
-            case "A":
-                target[0]=1;
-                return target;
-            case "B":
-                target[1]=1;
-                return target;
-            case "C":
-                target[2]=1;
-                return target;
-            case "D":
-                target[3]=1;
-                return target;
-            case "E":
-                target[4]=1;
-                return target;
-            case "J":
-                target[5]=1;
-                return target;
-            case "K":
-                target[6]=1;
-                return target;
-            default:
-                int numero =  Integer.parseInt(letra);
-                return new int []{numero};
         }
     }
 

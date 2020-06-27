@@ -12,10 +12,9 @@ public class CamadaSensor extends CamadaBase{
 
     List<Double> dadosEntrada = new ArrayList<>();
 
-
-    public CamadaSensor() {
-        this.qtdPesos = 1;
-        this.qtdNeuronios = 2;
+    public CamadaSensor(int qtdNeuronios, int qtdPesos) {
+        this.qtdNeuronios = qtdNeuronios;
+        this.qtdPesos = qtdPesos;
     }
 
     public List<NeuronioPerceptron> gerarListaNeuroniosComPesos(){
@@ -78,6 +77,4 @@ public class CamadaSensor extends CamadaBase{
     public void setDadosEntrada(List<Double> dadosEntrada) {
         this.dadosEntrada = dadosEntrada;
     }
-
-
 }

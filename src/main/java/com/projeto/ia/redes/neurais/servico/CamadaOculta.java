@@ -7,17 +7,16 @@ import java.util.List;
 
 public class CamadaOculta extends CamadaBase {
 
-
-    public CamadaOculta() {
-        this.qtdPesos = 1;
-        this.qtdNeuronios = 1;
+    public CamadaOculta(int qtdNeuronios, int qtdPesos) {
+        this.qtdNeuronios = qtdNeuronios;
+        this.qtdPesos = qtdPesos;
     }
 
     public List<NeuronioPerceptron> gerarListaNeuroniosComPesos(){
         bias.gerarPesos(qtdPesos);
         NeuronioFactory neuronioFactory = new NeuronioFactory();
 
-        for (int i = 0; i < qtdNeuronios ; i++) { //qtdNeuronios = 20 (correto!!)
+        for (int i = 0; i < qtdNeuronios ; i++) {
             NeuronioPerceptron neuronioPerceptron = neuronioFactory.getNeuronio();
             neuronioPerceptron.gerarPesos(qtdPesos);
             neuroniosProcessadores.add(neuronioPerceptron);
