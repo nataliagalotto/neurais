@@ -3,9 +3,12 @@ package com.projeto.ia.redes.neurais.arquivo;
 import com.projeto.ia.redes.neurais.entidades.Bias;
 import com.projeto.ia.redes.neurais.servico.CamadaBase;
 import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
+import org.apache.commons.math3.util.Precision;
 import org.decimal4j.util.DoubleRounder;
 
 import java.io.FileWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class Escrita extends Arquivo{
@@ -44,7 +47,8 @@ public class Escrita extends Arquivo{
     public void printaDouble(Double numero){
         try{
             FileWriter writer = geraArquivo(caminhoArquivo);
-            writer.write(DoubleRounder.round(numero, 18)+"\n");
+            BigDecimal bd = new BigDecimal(Double.toString(numero));
+            writer.write(bd.toString()+"\n");
             writer.close();
 
         }catch (Exception e){
@@ -107,18 +111,37 @@ public class Escrita extends Arquivo{
     }
 
     /*
+       Método auxiliar utilizado para gerar
+       arquivo com os erros cometidos pela rede
+    */
+    public void printaErrosQuadratico(Double[] valores){
+        try{
+            FileWriter writer = geraArquivo(caminhoArquivo);
+            for (int i = 0; i < valores.length; i++) {
+                double numero = Math.pow(valores[i],2);
+                BigDecimal bd = new BigDecimal(Double.toString(numero));
+                writer.write(bd.toString()+"\n");
+            }
+
+            writer.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /*
         Método auxiliar utilizado para gerar
         arquivo com os erros cometidos pela rede
      */
     public void printaErros(Double[] valores){
         try{
             FileWriter writer = geraArquivo(caminhoArquivo);
-            writer.write("Errors\n");
             for (int i = 0; i < valores.length; i++) {
-                writer.write(valores[i]+"\n");
+                double numero = valores[i];
+                BigDecimal bd = new BigDecimal(Double.toString(numero));
+                writer.write(bd.toString()+"\n");
             }
 
-            writer.write("===============================\n");
             writer.close();
         }catch (Exception e){
             System.out.println(e.getMessage());
