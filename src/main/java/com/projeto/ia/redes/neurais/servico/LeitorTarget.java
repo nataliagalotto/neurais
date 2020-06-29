@@ -37,10 +37,8 @@ public class LeitorTarget {
         List<String[]> dados = leitura.dadosCSV();
         targets = new int[dados.size()];
 
-        for (String[] dado : dados) {
-            for (int i = 0; i < targets.length; i++) {
-                targets[i] = Integer.parseInt(dado[0].replaceAll("\\uFEFF", ""));
-            }
+        for (int i = 0; i < targets.length; i++) {
+            targets[i] = Integer.parseInt(dados.get(i)[0].replaceAll("\\uFEFF", ""));
         }
 
         return targets;

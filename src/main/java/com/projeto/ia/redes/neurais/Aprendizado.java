@@ -29,7 +29,7 @@ public class Aprendizado {
 			int qtdDados = dadosPlanilha.size();
 
 			// Passo 0 - Estágio de Inicialização
-			Rede rede = new Rede(25,40,1);																// Instancia um objeto Rede
+			Rede rede = new Rede(25,60,1);																// Instancia um objeto Rede
 			rede.gerarCamadaSensorComPesos();													// e invoca os métodos responsáveis por criar as camadas da rede com
 			rede.gerarCamadaOcultaComPesos();													// seus pesos definidos em cada uma das camadas e imprime as informações num arquivo
 			rede.gerarCamadaSaida();
