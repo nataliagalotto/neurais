@@ -13,9 +13,9 @@ import java.util.List;
 @SpringBootApplication
 public class Aprendizado {
 
-	static Double alfa = 0.3;		// Alfa, critério de aprendizado
+	static Double alfa = 0.1;		// Alfa, critério de aprendizado
 	static int epocas = 0;			// Contador de épocas
-	static int epocaFinal = 5000;	// Limitador de épocas
+	static int epocaFinal = 20;	// Limitador de épocas
 	static Double sumErro;
 	static Double sumErroLogLess;
 
@@ -29,7 +29,7 @@ public class Aprendizado {
 			int qtdDados = dadosPlanilha.size();
 
 			// Passo 0 - Estágio de Inicialização
-			Rede rede = new Rede(25,60,1);																// Instancia um objeto Rede
+			Rede rede = new Rede(25,20,1);																// Instancia um objeto Rede
 			rede.gerarCamadaSensorComPesos();													// e invoca os métodos responsáveis por criar as camadas da rede com
 			rede.gerarCamadaOcultaComPesos();													// seus pesos definidos em cada uma das camadas e imprime as informações num arquivo
 			rede.gerarCamadaSaida();
@@ -92,12 +92,14 @@ public class Aprendizado {
 					rede.atualizaPesosCamadaSensor(deltaoVIJ,deltao_biasVJ);
 					rede.atualizaPesosBiasCamadaOculta(deltaoWJK, deltaoBiasWK);
 
+					printaErrosQuadratico(calcula.getErro(), "erroQuadratico");
+					printaErros(calcula.getErro(), "erroNomal");
 					somaErro(calcula.getErro());
 					somaErroLogLess(calcula.getErroLogLess());
 
 					if( i == qtdDados - 1 ){
 						printaErros(calcula.calculaMediaErro(sumErro, qtdDados), "taxaErro");
-						//printaErros(calcula.calculaMediaErro(sumErroLogLess, qtdDados),"taxaErroLogLess");
+						printaErros(calcula.calculaMediaErro(sumErroLogLess, qtdDados),"taxaErroLogLess");
 					}
 				}
 				epocas++;
@@ -120,7 +122,7 @@ public class Aprendizado {
 
 	public static void somaErro(Double[] erro){
 		for (int k = 0; k < erro.length; k++) {
-			sumErro = sumErro + erro[k];
+			sumErro = sumErro + Math.pow(erro[k],2);
 		}
 	}
 
@@ -182,6 +184,24 @@ public class Aprendizado {
 		try {
 			Escrita escrita = new Escrita("dados/saida/"+arquivo+".txt");
 			escrita.printaDouble(erros);
+		}catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public static void printaErros(Double[] erros, String arquivo){
+		try {
+			Escrita escrita = new Escrita("dados/saida/"+arquivo+".txt");
+			escrita.printaErros(erros);
+		}catch (Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public static void printaErrosQuadratico(Double[] erros, String arquivo){
+		try {
+			Escrita escrita = new Escrita("dados/saida/"+arquivo+".txt");
+			escrita.printaErrosQuadratico(erros);
 		}catch (Exception e){
 			System.out.println(e.getMessage());
 		}
