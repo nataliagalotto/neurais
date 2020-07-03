@@ -3,7 +3,6 @@ package com.projeto.ia.redes.neurais.arquivo;
 import com.projeto.ia.redes.neurais.entidades.Bias;
 import com.projeto.ia.redes.neurais.servico.CamadaBase;
 import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
-import org.apache.commons.math3.util.Precision;
 import org.decimal4j.util.DoubleRounder;
 
 import java.io.FileWriter;

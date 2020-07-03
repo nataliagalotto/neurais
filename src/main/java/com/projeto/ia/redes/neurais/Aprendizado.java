@@ -17,7 +17,7 @@ public class Aprendizado {
 	static int epocas = 0;			// Contador de épocas
 	static int epocaFinal = 20;	// Limitador de épocas
 	static Double sumErro;
-	static Double sumErroLogLess;
+	static Double sumErroQuadratico;
 
 	public static void main(String[] args) {
 		try {
@@ -43,7 +43,7 @@ public class Aprendizado {
 			while (epocas < epocaFinal){
 				System.out.println("Epoca: "+ epocas);                                          // Imprime a epoca atual na tela
 				sumErro = 0.0;
-				sumErroLogLess = 0.0;
+				sumErroQuadratico = 0.0;
 
                 /*
                     Para cada linha do arquivo de entrada
@@ -99,7 +99,7 @@ public class Aprendizado {
 
 					if( i == qtdDados - 1 ){
 						printaErros(calcula.calculaMediaErro(sumErro, qtdDados), "taxaErro");
-						printaErros(calcula.calculaMediaErro(sumErroLogLess, qtdDados),"taxaErroLogLess");
+						printaErros(Math.pow(calcula.calculaMediaErro(sumErroQuadratico, qtdDados),2),"taxaErroQuadratico");
 					}
 				}
 				epocas++;
@@ -128,7 +128,7 @@ public class Aprendizado {
 
 	public static void somaErroLogLess(Double[] erro){
 		for (int k = 0; k < erro.length; k++) {
-			sumErroLogLess = sumErroLogLess + erro[k];
+			sumErroQuadratico = sumErroQuadratico + erro[k];
 		}
 	}
 

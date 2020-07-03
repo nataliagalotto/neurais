@@ -1,6 +1,5 @@
 package com.projeto.ia.redes.neurais.servico;
 import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
-import org.apache.spark.mllib.tree.loss.LogLoss;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,6 @@ public class Calcula extends CalculaBase {
             //saída da camada final y
             erro[k] = (targets[k] - y);
             System.out.println(targets[k] +";"+y);
-            erroLogLess[k] = calculaErroLogLoss(y,targets[k]);
 
             //Computa a correção dos pesos da camada de saida
             //multiplicando o erro pela função derivada
@@ -47,10 +45,6 @@ public class Calcula extends CalculaBase {
         }
 
         return deltinhas_K;
-    }
-
-    public Double calculaErroLogLoss(Double y , int target){
-        return LogLoss.gradient(y, target);
     }
 
     public double calculaMediaErro(Double sumErro, int qtdDados){
