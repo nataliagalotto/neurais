@@ -15,13 +15,11 @@ public class Calcula extends CalculaBase {
     public Calcula(List<NeuronioPerceptron> neuroniosSensores,
                    List<NeuronioPerceptron> neuroniosProcessadores,
                    List<NeuronioPerceptron> neuroniosSaida,
-                   Double[] erro,
-                   Double[] erroLogLess) {
+                   Double[] erro) {
         this.neuroniosSensores = neuroniosSensores;
         this.neuroniosProcessadores = neuroniosProcessadores;
         this.neuroniosSaida = neuroniosSaida;
         this.erro = erro;
-        this.erroLogLess = erroLogLess;
     }
 
     //   δk =(tk − yk ) * f′(y_in)
@@ -190,14 +188,6 @@ public class Calcula extends CalculaBase {
      */
     public Double[] getErro() {
         return erro;
-    }
-
-    /*
-        Getter dos erros
-        cometidos pela rede
-     */
-    public Double[] getErroLogLess() {
-        return erroLogLess;
     }
 
 }

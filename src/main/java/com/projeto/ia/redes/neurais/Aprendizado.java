@@ -73,7 +73,6 @@ public class Aprendizado {
 					Calcula calcula = new Calcula(camadaSensor.getNeuroniosSensores(),
 							camadaOculta.getNeuroniosProcessadores(),
 							camadaSaida.getNeuroniosSaida(),
-							new Double[camadaSaida.getQtdNeuronios()],
 							new Double[camadaSaida.getQtdNeuronios()]);
 
 					// Calcula e armazena as correções de pesos e bias
@@ -95,11 +94,11 @@ public class Aprendizado {
 					printaErrosQuadratico(calcula.getErro(), "erroQuadratico");
 					printaErros(calcula.getErro(), "erroNomal");
 					somaErro(calcula.getErro());
-					somaErroLogLess(calcula.getErroLogLess());
+					sumErroQuadratico(calcula.getErro());
 
 					if( i == qtdDados - 1 ){
 						printaErros(calcula.calculaMediaErro(sumErro, qtdDados), "taxaErro");
-						printaErros(Math.pow(calcula.calculaMediaErro(sumErroQuadratico, qtdDados),2),"taxaErroQuadratico");
+						printaErros(calcula.calculaMediaErro(sumErroQuadratico, qtdDados),"taxaErroQuadratico");
 					}
 				}
 				epocas++;
@@ -122,13 +121,13 @@ public class Aprendizado {
 
 	public static void somaErro(Double[] erro){
 		for (int k = 0; k < erro.length; k++) {
-			sumErro = sumErro + Math.pow(erro[k],2);
+			sumErro = sumErro + erro[k];
 		}
 	}
 
-	public static void somaErroLogLess(Double[] erro){
+	public static void sumErroQuadratico(Double[] erro){
 		for (int k = 0; k < erro.length; k++) {
-			sumErroQuadratico = sumErroQuadratico + erro[k];
+			sumErroQuadratico = sumErroQuadratico + Math.pow(erro[k],2);
 		}
 	}
 
