@@ -2,8 +2,6 @@ package com.projeto.ia.redes.neurais.servico;
 
 import com.projeto.ia.redes.neurais.arquivo.Leitura;
 import com.projeto.ia.redes.neurais.enums.TiposTarget;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class LeitorTarget {

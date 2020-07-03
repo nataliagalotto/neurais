@@ -15,8 +15,7 @@ public class Aprendizado {
 
 	static Double alfa = 0.1;		// Alfa, critério de aprendizado
 	static int epocas = 0;			// Contador de épocas
-	static int epocaFinal = 20;	// Limitador de épocas
-	static Double sumErro;
+	static int epocaFinal = 300;	// Limitador de épocas
 	static Double sumErroQuadratico;
 
 	public static void main(String[] args) {
@@ -42,7 +41,6 @@ public class Aprendizado {
 
 			while (epocas < epocaFinal){
 				System.out.println("Epoca: "+ epocas);                                          // Imprime a epoca atual na tela
-				sumErro = 0.0;
 				sumErroQuadratico = 0.0;
 
                 /*
@@ -91,13 +89,9 @@ public class Aprendizado {
 					rede.atualizaPesosCamadaSensor(deltaoVIJ,deltao_biasVJ);
 					rede.atualizaPesosBiasCamadaOculta(deltaoWJK, deltaoBiasWK);
 
-					printaErrosQuadratico(calcula.getErro(), "erroQuadratico");
-					printaErros(calcula.getErro(), "erroNomal");
-					somaErro(calcula.getErro());
 					sumErroQuadratico(calcula.getErro());
 
 					if( i == qtdDados - 1 ){
-						printaErros(calcula.calculaMediaErro(sumErro, qtdDados), "taxaErro");
 						printaErros(calcula.calculaMediaErro(sumErroQuadratico, qtdDados),"taxaErroQuadratico");
 					}
 				}
@@ -116,12 +110,6 @@ public class Aprendizado {
 			}
 			System.err.println(e.getMessage());
 			System.err.println(e.getCause().getMessage());
-		}
-	}
-
-	public static void somaErro(Double[] erro){
-		for (int k = 0; k < erro.length; k++) {
-			sumErro = sumErro + erro[k];
 		}
 	}
 
@@ -183,24 +171,6 @@ public class Aprendizado {
 		try {
 			Escrita escrita = new Escrita("dados/saida/"+arquivo+".txt");
 			escrita.printaDouble(erros);
-		}catch (Exception e){
-			System.out.println(e.getMessage());
-		}
-	}
-
-	public static void printaErros(Double[] erros, String arquivo){
-		try {
-			Escrita escrita = new Escrita("dados/saida/"+arquivo+".txt");
-			escrita.printaErros(erros);
-		}catch (Exception e){
-			System.out.println(e.getMessage());
-		}
-	}
-
-	public static void printaErrosQuadratico(Double[] erros, String arquivo){
-		try {
-			Escrita escrita = new Escrita("dados/saida/"+arquivo+".txt");
-			escrita.printaErrosQuadratico(erros);
 		}catch (Exception e){
 			System.out.println(e.getMessage());
 		}

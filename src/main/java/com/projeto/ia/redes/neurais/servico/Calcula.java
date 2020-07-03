@@ -33,7 +33,7 @@ public class Calcula extends CalculaBase {
             //Calcula o erro com base no target e na
             //saída da camada final y
             erro[k] = (targets[k] - y);
-            System.out.println(targets[k] +";"+y);
+            //System.out.println(targets[k] +";"+y);
 
             //Computa a correção dos pesos da camada de saida
             //multiplicando o erro pela função derivada
