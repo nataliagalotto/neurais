@@ -3,9 +3,9 @@ import com.projeto.ia.redes.neurais.arquivo.Escrita;
 import com.projeto.ia.redes.neurais.arquivo.Leitura;
 import com.projeto.ia.redes.neurais.entidades.NeuronioPerceptron;
 import com.projeto.ia.redes.neurais.enums.TiposTarget;
+import com.projeto.ia.redes.neurais.servico.Calcula;
 import com.projeto.ia.redes.neurais.servico.LeitorTarget;
 import com.projeto.ia.redes.neurais.servico.Rede;
-import org.decimal4j.util.DoubleRounder;
 import java.util.List;
 
 /*
@@ -15,49 +15,25 @@ import java.util.List;
 
 public class Teste {
 
-    public static void main(String[] args) {
+    Double sumErroQuadraticoTeste;
+
+    public void principal(List<String[]> dadosPlanilha, LeitorTarget lt, Rede rede) {
+
+        int qtdDados = dadosPlanilha.size();
+        Leitura leitura = new Leitura();
+        sumErroQuadraticoTeste = 0.0;
 
         //Realiza a leitura do arquivo contendo os
         //pesos da rede após o treinamento e do arquivo
         //contendo os dados de entrada para o teste
         try {
-            Leitura leitura = new Leitura("dados/entrada/caracteres-ruido.csv"); //recebe os dados de entrada
-            LeitorTarget lt = new LeitorTarget(TiposTarget.CSV);
-
-            //Armazena os dados lidos em estruturas
-            //List de Strings
-            List<String[]> dadosPlanilha = leitura.dadosCSV();
-
-            //Utiliza o método da classe Leitura para "setar" os pesos
-            //obtidos no treinamento na rede
-            List<Double> pesosEntradaSensor = leitura.gerarPesosEntrada("dados/saida/pesosFinaisSensor.txt");
-            List<Double> pesosEntradaOculta = leitura.gerarPesosEntrada("dados/saida/pesosFinaisOculta.txt");
-            List<Double> pesosBiasEntradaSensor = leitura.gerarPesosEntrada("dados/saida/pesoBiasFinaisSensor.txt");
-            List<Double> pesosBiasEntradaOculta = leitura.gerarPesosEntrada("dados/saida/pesoBiasFinaisOculta.txt");
-
-            //Utiliza os métodos da classe Rede
-            //para construir uma rede com os parâmetros
-            //obtidos aós o treinamento
-            //Note: Da forma que foram implementadas
-            // as camadas neurônios, os pesos são setados
-            //nos neuronios da camada sensor e
-            //da camada oculta - sem perder seu significado
-            Rede rede = new Rede(25,20,1);
-            rede.gerarCamadaSensorComPesosTeste(pesosEntradaSensor,pesosBiasEntradaSensor);
-            rede.gerarCamadaOcultaComPesosTeste(pesosEntradaOculta,pesosBiasEntradaOculta);
-            rede.gerarCamadaSaida();
-
             //Para cada entrada do arquivo de dados de entrada
             //realiza a leitura e computa os resultados na rede
-            for (int i = 0; i < dadosPlanilha.size(); i++) {
+            for (int i = 0; i < qtdDados; i++) {
 
                     //Le cada linha do arquivo de entrada
                     //para utilizá-los na rede
                     List<Double> dadosEntrada = leitura.gerarDadosEntrada(dadosPlanilha.get(i),lt);
-
-                    //Constrói as variáveis correspondentes
-                    //ao target de cada linha de dados de entrada
-                    int target[] = lt.pegaTarget(i);
 
                     //Computa os valores da rede
                     //para cada camada realiza as somas ponderadas
@@ -67,10 +43,18 @@ public class Teste {
                     rede.gerarDadosCamadaOculta();
                     rede.gerarDadosCamadaSaida();
 
-                    //Armazena os resultados finais da rede(camada saida)
-                    //e invoca o método para imprimir os resultados
-                    List<NeuronioPerceptron> neuronioPerceptrons = rede.getCamadaSaida().getNeuroniosSaida();
-                    printFinal(neuronioPerceptrons, target, lt.getTarget()); //fixme
+                    Calcula calcula = new Calcula();
+                    int qtdDadosSaida = rede.getCamadaSaida().getQtdNeuronios();
+                    int target[] = lt.pegaTarget(i);
+
+                    for (int k = 0; k < qtdDadosSaida ; k++) {
+                        Double dadoSaida = getDadoSaida(rede,k);
+                        sumErroQuadratico(calcula.calculaError(target[k],dadoSaida));
+                    }
+
+                    if (i == qtdDados - 1) {
+                        printaErros(calcula.calculaMediaErro(sumErroQuadraticoTeste, qtdDados), "taxaErroQuadraticoTeste");
+                    }
                 }
             } catch (Exception e ){
             for (StackTraceElement tk: e.getStackTrace()) {
@@ -85,15 +69,29 @@ public class Teste {
         }
     }
 
+    public void sumErroQuadratico(Double erro) {
+        sumErroQuadraticoTeste = sumErroQuadraticoTeste + Math.pow(erro, 2);
+    }
+
+    public  Double getDadoSaida(Rede rede, int k){
+        return rede.getCamadaSaida().getNeuroniosSaida().get(k).getDado();
+    }
+
+    public void printaErros(Double erros, String arquivo) {
+        try {
+            Escrita escrita = new Escrita("dados/saida/" + arquivo + ".txt");
+            escrita.printaDouble(erros);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     /*
         Método responsável por imprimir os resultados finais
         com a classificação dada pela Rede
      */
-    public static void printFinal(List<NeuronioPerceptron> neuronioPerceptrons, int [] target, String letra){
+    public void printFinal(List<NeuronioPerceptron> neuronioPerceptrons, int [] target, String letra){
         Escrita escrita = new Escrita("dados/saida/validaTeste.txt");
-        escrita.printFinalComRound(neuronioPerceptrons,target,letra);
-
-        Escrita escrita2 = new Escrita("dados/saida/validaTesteSemArredondar.txt");
-        escrita2.printFinalSemRound(neuronioPerceptrons,target,letra);
+        escrita.printFinalComRound(neuronioPerceptrons,target);
     }
 }

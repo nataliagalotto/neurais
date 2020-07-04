@@ -30,8 +30,8 @@ public class LeitorTarget {
         return n;
     }
 
-    public int [] csvTarget(){
-        Leitura leitura = new Leitura("dados/entrada/ep3/y_train.csv");
+    public int [] csvTarget(String arquivo){
+        Leitura leitura = new Leitura(arquivo);
         List<String[]> dados = leitura.dadosCSV();
         targets = new int[dados.size()];
 

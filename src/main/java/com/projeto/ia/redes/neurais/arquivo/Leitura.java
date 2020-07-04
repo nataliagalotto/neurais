@@ -21,12 +21,16 @@ public class Leitura extends Arquivo{
         this.caminhoArquivo = caminhoArquivo;
     }
 
+    public Leitura() {
+
+    }
+
     /*
-        Método responsável por realizar a leitura do arquivo CSV
-        contendo os dados de entrada e armazená-los numa List de
-        Strings, onde cada String armazena uma linha do arquivo
-        CSV
-     */
+            Método responsável por realizar a leitura do arquivo CSV
+            contendo os dados de entrada e armazená-los numa List de
+            Strings, onde cada String armazena uma linha do arquivo
+            CSV
+         */
     public List<String[]> dadosCSV(){
         try {
             Reader reader = new FileReader(caminhoArquivo);
